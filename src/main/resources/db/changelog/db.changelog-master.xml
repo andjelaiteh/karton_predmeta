@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.23.xsd">
+
+    <include file="db/changelog/01-create-sifarnici1.xml"/>
+    <include file="db/changelog/02-create-core.xml"/>
+    <include file="db/changelog/03-create-relations.xml"/>
+    <include file="db/changelog/04-seed-data-sifarnici1.xml"/>
+    <include file="db/changelog/05-create-nastava-and-tip-nastave.xml"/>
+    <include file="db/changelog/06-create-ocenjivanje.xml"/>
+    <include file="db/changelog/07-create-literatura-autor.xml"/>
+</databaseChangeLog>

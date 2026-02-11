@@ -1,0 +1,18 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="04-seed-tip-statusa" author="andjela">
+        <insert tableName="tip_statusa"><column name="naziv" value="Obavezni"/></insert>
+        <insert tableName="tip_statusa"><column name="naziv" value="Izborni"/></insert>
+    </changeSet>
+
+    <changeSet id="04-seed-tip-zvanja" author="andjela">
+        <insert tableName="tip_zvanja"><column name="naziv" value="Redovni profesor"/></insert>
+        <insert tableName="tip_zvanja"><column name="naziv" value="Vanredni profesor"/></insert>
+        <insert tableName="tip_zvanja"><column name="naziv" value="Docent"/></insert>
+    </changeSet>
+
+</databaseChangeLog>

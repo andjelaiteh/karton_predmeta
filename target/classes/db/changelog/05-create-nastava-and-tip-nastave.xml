@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.23.xsd">
+
+ 
+    <changeSet id="2026-02-06-01-1-create-tip-nastave" author="andjela">
+        <createTable tableName="tip_nastave">
+            <column name="tipnastaveid" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="naziv" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2026-02-06-01-2-create-nastava" author="andjela">
+        <createTable tableName="nastava">
+            <column name="nastavaid" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="predmetid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="tipnastaveid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="broj_casova" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="nastava" baseColumnNames="predmetid"
+                referencedTableName="predmet" referencedColumnNames="predmetid"
+                constraintName="fk_nastava_predmet"/>
+
+        <addForeignKeyConstraint
+                baseTableName="nastava" baseColumnNames="tipnastaveid"
+                referencedTableName="tip_nastave" referencedColumnNames="tipnastaveid"
+                constraintName="fk_nastava_tip"/>
+
+        <addUniqueConstraint
+                tableName="nastava"
+                columnNames="predmetid, tipnastaveid"
+                constraintName="uq_nastava_predmet_tip"/>
+    </changeSet>
+
+    <changeSet id="2026-02-06-01-3-seed-tip-nastave" author="andjela">
+        <insert tableName="tip_nastave">
+            <column name="naziv" value="Teorijska nastava"/>
+        </insert>
+        <insert tableName="tip_nastave">
+            <column name="naziv" value="Vezbe"/>
+        </insert>
+        <insert tableName="tip_nastave">
+            <column name="naziv" value="DON"/>
+        </insert>
+        <insert tableName="tip_nastave">
+            <column name="naziv" value="SIR"/>
+        </insert>
+        <insert tableName="tip_nastave">
+            <column name="naziv" value="Ostali casovi"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

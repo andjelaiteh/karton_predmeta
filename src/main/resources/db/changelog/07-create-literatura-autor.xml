@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    
+<changeSet id="07-1-create-autor" author="andjela">
+    <createTable tableName="autor">
+        <column name="autorid" type="INT">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="ime_prezime" type="VARCHAR(120)">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+
+    <addAutoIncrement tableName="autor"
+                      columnName="autorid"
+                      columnDataType="INT"/>
+</changeSet>
+
+<changeSet id="07-2-create-izdavac" author="andjela">
+    <createTable tableName="izdavac">
+        <column name="izdavacid" type="INT">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="naziv" type="VARCHAR(150)">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+
+    <addAutoIncrement tableName="izdavac"
+                      columnName="izdavacid"
+                      columnDataType="INT"/>
+</changeSet>
+
+<changeSet id="07-3-create-literatura" author="andjela">
+    <createTable tableName="literatura">
+        <column name="literaturaid" type="INT">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+
+        <column name="naslov" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+        </column>
+
+        <column name="godina" type="INT">
+            <constraints nullable="false"/>
+        </column>
+
+        <column name="izdavacid" type="INT">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+
+    <addAutoIncrement tableName="literatura"
+                      columnName="literaturaid"
+                      columnDataType="INT"/>
+
+    <addForeignKeyConstraint baseTableName="literatura"
+                             baseColumnNames="izdavacid"
+                             referencedTableName="izdavac"
+                             referencedColumnNames="izdavacid"
+                             constraintName="fk_literatura_izdavac"/>
+</changeSet>
+
+<changeSet id="07-4-create-autor-literatura" author="andjela">
+    <createTable tableName="autor_literatura">
+        <column name="autor_literaturaid" type="INT">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+
+        <column name="autorid" type="INT">
+            <constraints nullable="false"/>
+        </column>
+
+        <column name="literaturaid" type="INT">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+
+    <addAutoIncrement tableName="autor_literatura"
+                      columnName="autor_literaturaid"
+                      columnDataType="INT"/>
+
+    <addForeignKeyConstraint baseTableName="autor_literatura"
+                             baseColumnNames="autorid"
+                             referencedTableName="autor"
+                             referencedColumnNames="autorid"
+                             constraintName="fk_autor_literatura_autor"/>
+
+    <addForeignKeyConstraint baseTableName="autor_literatura"
+                             baseColumnNames="literaturaid"
+                             referencedTableName="literatura"
+                             referencedColumnNames="literaturaid"
+                             constraintName="fk_autor_literatura_literatura"/>
+
+    <addUniqueConstraint tableName="autor_literatura"
+                         columnNames="autorid, literaturaid"
+                         constraintName="uq_autor_literatura"/>
+</changeSet>
+
+<changeSet id="07-5-create-predmet-literatura" author="andjela">
+    <createTable tableName="predmet_literatura">
+        <column name="predmet_literaturaid" type="INT">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+
+        <column name="predmetid" type="INT">
+            <constraints nullable="false"/>
+        </column>
+
+        <column name="literaturaid" type="INT">
+            <constraints nullable="false"/>
+        </column>
+
+        <column name="obavezna" type="BOOLEAN">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+
+    <addAutoIncrement tableName="predmet_literatura"
+                      columnName="predmet_literaturaid"
+                      columnDataType="INT"/>
+
+    <addForeignKeyConstraint baseTableName="predmet_literatura"
+                             baseColumnNames="predmetid"
+                             referencedTableName="predmet"
+                             referencedColumnNames="predmetid"
+                             constraintName="fk_predmet_literatura_predmet"/>
+
+    <addForeignKeyConstraint baseTableName="predmet_literatura"
+                             baseColumnNames="literaturaid"
+                             referencedTableName="literatura"
+                             referencedColumnNames="literaturaid"
+                             constraintName="fk_predmet_literatura_literatura"/>
+
+    <addUniqueConstraint tableName="predmet_literatura"
+                         columnNames="predmetid, literaturaid"
+                         constraintName="uq_predmet_literatura"/>
+</changeSet>
+
+    
+    
+</databaseChangeLog>

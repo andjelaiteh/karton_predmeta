@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    
+<changeSet id="07-01-create-tip-obaveze" author="andjela">
+    <createTable tableName="tip_obaveze">
+        <column name="tipobavezeid" type="INT">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="naziv" type="VARCHAR(50)">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+
+    <addAutoIncrement tableName="tip_obaveze"
+                      columnName="tipobavezeid"
+                      columnDataType="INT"/>
+</changeSet>
+
+<changeSet id="07-02-create-and-seed-tip-obaveze" author="andjela">
+    <insert tableName="tip_obaveze">
+        <column name="naziv" value="PREDISPITNA"/>
+    </insert>
+    <insert tableName="tip_obaveze">
+        <column name="naziv" value="ISPITNA"/>
+    </insert>
+</changeSet>
+
+<changeSet id="07-03-create-ispitna-obaveza" author="andjela">
+    <createTable tableName="ispitna_obaveza">
+        <column name="obavezaid" type="INT">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="naziv_obaveze" type="VARCHAR(100)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="tipobavezeid" type="INT">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+
+    <addAutoIncrement tableName="ispitna_obaveza"
+                      columnName="obavezaid"
+                      columnDataType="INT"/>
+
+    <addForeignKeyConstraint baseTableName="ispitna_obaveza"
+                             baseColumnNames="tipobavezeid"
+                             referencedTableName="tip_obaveze"
+                             referencedColumnNames="tipobavezeid"
+                             constraintName="fk_ispitna_obaveza_tip_obaveze"/>
+</changeSet>
+
+<changeSet id="07-04-create-ocenjivanje" author="andjela">
+    <createTable tableName="ocenjivanje">
+        <column name="ocenjivanjeid" type="INT">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+
+        <column name="predmetid" type="INT">
+            <constraints nullable="false"/>
+        </column>
+
+        <column name="obavezaid" type="INT">
+            <constraints nullable="false"/>
+        </column>
+
+        <column name="obavezna" type="BOOLEAN">
+            <constraints nullable="false"/>
+        </column>
+
+        <column name="poeni" type="INT">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+
+    <addAutoIncrement tableName="ocenjivanje"
+                      columnName="ocenjivanjeid"
+                      columnDataType="INT"/>
+
+    <addForeignKeyConstraint baseTableName="ocenjivanje"
+                             baseColumnNames="predmetid"
+                             referencedTableName="predmet"
+                             referencedColumnNames="predmetid"
+                             constraintName="fk_ocenjivanje_predmet"/>
+
+    <addForeignKeyConstraint baseTableName="ocenjivanje"
+                             baseColumnNames="obavezaid"
+                             referencedTableName="ispitna_obaveza"
+                             referencedColumnNames="obavezaid"
+                             constraintName="fk_ocenjivanje_ispitna_obaveza"/>
+
+    <addUniqueConstraint tableName="ocenjivanje"
+                         columnNames="predmetid, obavezaid"
+                         constraintName="uq_ocenjivanje_predmet_obaveza"/>
+</changeSet>
+
+
+</databaseChangeLog>

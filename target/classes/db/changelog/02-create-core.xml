@@ -1,0 +1,49 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="02-create-studijski-program" author="andjela">
+        <createTable tableName="studijski_program">
+            <column name="programid" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="naziv_programa" type="VARCHAR(200)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="02-create-predmet" author="andjela">
+        <createTable tableName="predmet">
+            <column name="predmetid" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="naziv_predmeta" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="espb" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="02-create-nastavnik" author="andjela">
+        <createTable tableName="nastavnik">
+            <column name="nastavnikid" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ime" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prezime" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tipzvanjaid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

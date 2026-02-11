@@ -1,0 +1,94 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+
+    <changeSet id="03-fk-nastavnik-tipzvanja" author="andjela">
+        <addForeignKeyConstraint
+                baseTableName="nastavnik"
+                baseColumnNames="tipzvanjaid"
+                referencedTableName="tip_zvanja"
+                referencedColumnNames="tipzvanjaid"
+                constraintName="fk_nastavnik_tipzvanja"/>
+    </changeSet>
+
+    <changeSet id="03-create-status" author="andjela">
+        <createTable tableName="status">
+            <column name="statusid" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="predmetid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="programid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tipstatusaid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="status"
+                baseColumnNames="predmetid"
+                referencedTableName="predmet"
+                referencedColumnNames="predmetid"
+                constraintName="fk_status_predmet"/>
+
+        <addForeignKeyConstraint
+                baseTableName="status"
+                baseColumnNames="programid"
+                referencedTableName="studijski_program"
+                referencedColumnNames="programid"
+                constraintName="fk_status_program"/>
+
+        <addForeignKeyConstraint
+                baseTableName="status"
+                baseColumnNames="tipstatusaid"
+                referencedTableName="tip_statusa"
+                referencedColumnNames="tipstatusaid"
+                constraintName="fk_status_tipstatusa"/>
+
+        <addUniqueConstraint
+                tableName="status"
+                columnNames="predmetid, programid"
+                constraintName="uq_status_predmet_program"/>
+    </changeSet>
+
+    <!-- ANGAZOVANJE tabela -->
+    <changeSet id="03-create-angazovanje" author="andjela">
+        <createTable tableName="angazovanje">
+            <column name="angazovanjeid" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nastavnikid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="predmetid" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="angazovanje"
+                baseColumnNames="nastavnikid"
+                referencedTableName="nastavnik"
+                referencedColumnNames="nastavnikid"
+                constraintName="fk_angazovanje_nastavnik"/>
+
+        <addForeignKeyConstraint
+                baseTableName="angazovanje"
+                baseColumnNames="predmetid"
+                referencedTableName="predmet"
+                referencedColumnNames="predmetid"
+                constraintName="fk_angazovanje_predmet"/>
+
+        <addUniqueConstraint
+                tableName="angazovanje"
+                columnNames="nastavnikid, predmetid"
+                constraintName="uq_angazovanje_nastavnik_predmet"/>
+    </changeSet>
+
+</databaseChangeLog>
