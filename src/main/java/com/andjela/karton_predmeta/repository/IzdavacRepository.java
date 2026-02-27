@@ -5,6 +5,7 @@
 package com.andjela.karton_predmeta.repository;
 
 import com.andjela.karton_predmeta.entity.Izdavac;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,5 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Andjela
  */
 public interface IzdavacRepository extends JpaRepository<Izdavac, Long> {
-    
+    Optional<Izdavac> findByNaziv(String naziv);
 }

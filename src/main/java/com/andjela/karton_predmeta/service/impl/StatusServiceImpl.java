@@ -39,7 +39,7 @@ public class StatusServiceImpl implements StatusService{
     
     @Override
     @Transactional
-    public void create(CreateStatusDto csd) throws Exception {
+    public Predmet create(CreateStatusDto csd) throws Exception {
         if (csd.getNaziv() == null || csd.getNaziv().trim().isEmpty())
             throw new Exception("Naziv predmeta je obavezan.");
         if (csd.getEspb() == null || csd.getEspb() <= 0)
@@ -57,12 +57,14 @@ public class StatusServiceImpl implements StatusService{
 
         Predmet predmet = new Predmet(null, csd.getNaziv().trim(), csd.getEspb());
         predmet = predmetRepo.save(predmet);
-
+        
         Status status = new Status();
         status.setPredmet(predmet);
         status.setProgram(program);
         status.setTipStatusa(tipStatusa);
+        
         statusRepo.save(status);
+        return predmet;
     }
     
 }

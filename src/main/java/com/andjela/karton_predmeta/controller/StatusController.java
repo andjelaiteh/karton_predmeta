@@ -5,6 +5,7 @@
 package com.andjela.karton_predmeta.controller;
 
 import com.andjela.karton_predmeta.dto.CreateStatusDto;
+import com.andjela.karton_predmeta.entity.Predmet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,11 +28,12 @@ public class StatusController {
         this.createStatusService = createStatusService;
     }
 
-    @PostMapping
-    public ResponseEntity<Void> create(@RequestBody CreateStatusDto dto) throws Exception {
-        createStatusService.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+   @PostMapping
+    public ResponseEntity<Predmet> create(@RequestBody CreateStatusDto dto) throws Exception {
+    Predmet saved = createStatusService.create(dto);
+    return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+}
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handle(Exception e) {

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="08-01-create-tip-literature" author="andjela">
+        <createTable tableName="tip_literature">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="naziv" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <insert tableName="tip_literature">
+            <column name="naziv" value="Obavezna"/>
+        </insert>
+        <insert tableName="tip_literature">
+            <column name="naziv" value="Dopunska"/>
+        </insert>
+
+        <rollback>
+            <dropTable tableName="tip_literature"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="08-02-migrate-obavezna-to-tip-literature" author="andjela">
+        <addColumn tableName="predmet_literatura">
+            <column name="tip_literature_id" type="BIGINT"/>
+        </addColumn>
+
+        <sql>
+            UPDATE predmet_literatura
+            SET tip_literature_id = (SELECT id FROM tip_literature WHERE naziv='Obavezna' LIMIT 1)
+            WHERE obavezna = 1;
+        </sql>
+        <sql>
+            UPDATE predmet_literatura
+            SET tip_literature_id = (SELECT id FROM tip_literature WHERE naziv='Dopunska' LIMIT 1)
+            WHERE obavezna = 0;
+        </sql>
+
+        <addNotNullConstraint tableName="predmet_literatura"
+                              columnName="tip_literature_id"
+                              columnDataType="BIGINT"/>
+
+        <addForeignKeyConstraint
+                baseTableName="predmet_literatura"
+                baseColumnNames="tip_literature_id"
+                referencedTableName="tip_literature"
+                referencedColumnNames="id"
+                constraintName="fk_predmet_literatura_tip_literature"/>
+
+        <dropColumn tableName="predmet_literatura" columnName="obavezna"/>
+
+        <rollback>
+            <addColumn tableName="predmet_literatura">
+                <column name="obavezna" type="TINYINT(1)" defaultValueNumeric="0">
+                    <constraints nullable="false"/>
+                </column>
+            </addColumn>
+
+            <sql>
+                UPDATE predmet_literatura pl
+                JOIN tip_literature tl ON tl.id = pl.tip_literature_id
+                SET pl.obavezna = CASE
+                    WHEN tl.naziv = 'Obavezna' THEN 1
+                    ELSE 0
+                END;
+            </sql>
+
+            <dropForeignKeyConstraint baseTableName="predmet_literatura"
+                                      constraintName="fk_predmet_literatura_tip_literature"/>
+            <dropColumn tableName="predmet_literatura" columnName="tip_literature_id"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

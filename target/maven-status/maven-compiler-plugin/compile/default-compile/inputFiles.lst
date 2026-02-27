@@ -5,6 +5,7 @@ C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\an
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\controller\PredmetController.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\controller\StatusController.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\controller\StudijskiProgramController.java
+C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\controller\TipLiteratureController.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\controller\TipStatusaController.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\dto\CreateLiteraturaStavkaDto.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\dto\CreateNastavaDto.java
@@ -31,6 +32,7 @@ C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\an
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\entity\PredmetLiteratura.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\entity\Status.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\entity\StudijskiProgram.java
+C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\entity\TipLiterature.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\entity\TipNastave.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\entity\TipObaveze.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\entity\TipStatusa.java
@@ -53,6 +55,7 @@ C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\an
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\repository\PredmetRepository.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\repository\StatusRepository.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\repository\StudijskiProgramRepository.java
+C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\repository\TipLiteratureRepository.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\repository\TipNastaveRepository.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\repository\TipObavezeRepository.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\repository\TipStatusaRepository.java

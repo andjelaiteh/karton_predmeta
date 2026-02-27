@@ -15,19 +15,28 @@ public class CreateLiteraturaStavkaDto {
     private String naslov;
     private Integer godina;
     private String izdavacNaziv;
-    private List<String> autoriImePrezime; 
-    private Boolean obavezna;
+    private Long tipLiteratureId;
+    private List<String> autori;
 
     public CreateLiteraturaStavkaDto() {
     }
 
-    public CreateLiteraturaStavkaDto(String naslov, Integer godina, String izdavacNaziv, List<String> autoriImePrezime, Boolean obavezna) {
+    public CreateLiteraturaStavkaDto(String naslov, Integer godina, String izdavacNaziv, Long tipLiteratureId, List<String> autori) {
         this.naslov = naslov;
         this.godina = godina;
         this.izdavacNaziv = izdavacNaziv;
-        this.autoriImePrezime = autoriImePrezime;
-        this.obavezna = obavezna;
+        this.tipLiteratureId = tipLiteratureId;
+        this.autori = autori;
     }
+
+    public List<String> getAutori() {
+        return autori;
+    }
+
+    public void setAutori(List<String> autori) {
+        this.autori = autori;
+    }
+
 
     public String getNaslov() {
         return naslov;
@@ -53,21 +62,14 @@ public class CreateLiteraturaStavkaDto {
         this.izdavacNaziv = izdavacNaziv;
     }
 
-    public List<String> getAutoriImePrezime() {
-        return autoriImePrezime;
+    public Long getTipLiteratureId() {
+        return tipLiteratureId;
     }
 
-    public void setAutoriImePrezime(List<String> autoriImePrezime) {
-        this.autoriImePrezime = autoriImePrezime;
+    public void setTipLiteratureId(Long tipLiteratureId) {
+        this.tipLiteratureId = tipLiteratureId;
     }
 
-    public Boolean getObavezna() {
-        return obavezna;
-    }
-
-    public void setObavezna(Boolean obavezna) {
-        this.obavezna = obavezna;
-    }
-    
+   
     
 }

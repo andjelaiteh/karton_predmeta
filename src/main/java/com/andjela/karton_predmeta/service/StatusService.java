@@ -5,11 +5,12 @@
 package com.andjela.karton_predmeta.service;
 
 import com.andjela.karton_predmeta.dto.CreateStatusDto;
+import com.andjela.karton_predmeta.entity.Predmet;
 
 /**
  *
  * @author Andjela
  */
 public interface StatusService {
-    void create(CreateStatusDto csd) throws Exception;
+    Predmet create(CreateStatusDto csd) throws Exception;
 }

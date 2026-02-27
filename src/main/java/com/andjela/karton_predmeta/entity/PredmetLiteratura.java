@@ -27,19 +27,22 @@ public class PredmetLiteratura {
    @JoinColumn(name="literaturaid", nullable=false)
    private Literatura literatura;
 
-   @Column(name="obavezna", nullable=false)
-   private Boolean obavezna;
+   @ManyToOne(optional = false)
+   @JoinColumn(name = "tip_literature_id")
+   private TipLiterature tipLiterature;
+
 
     public PredmetLiteratura() {
     }
 
-    public PredmetLiteratura(Long id, Predmet predmet, Literatura literatura, Boolean obavezna) {
+    public PredmetLiteratura(Long id, Predmet predmet, Literatura literatura, TipLiterature tipLiterature) {
         this.id = id;
         this.predmet = predmet;
         this.literatura = literatura;
-        this.obavezna = obavezna;
+        this.tipLiterature = tipLiterature;
     }
 
+  
     public Long getId() {
         return id;
     }
@@ -64,14 +67,15 @@ public class PredmetLiteratura {
         this.literatura = literatura;
     }
 
-    public Boolean getObavezna() {
-        return obavezna;
+    public TipLiterature getTipLiterature() {
+        return tipLiterature;
     }
 
-    public void setObavezna(Boolean obavezna) {
-        this.obavezna = obavezna;
+    public void setTipLiterature(TipLiterature tipLiterature) {
+        this.tipLiterature = tipLiterature;
     }
-  
+
+   
     
   
 }
