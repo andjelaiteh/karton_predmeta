@@ -30,7 +30,7 @@ jobs:
       - name: SonarQube Scan
         run: >
              mvn sonar:sonar
-             -Dsonar.projectKey=andjela_karton_predmeta
-             -Dsonar.organization=andjela
+             -Dsonar.projectKey=andjelaiteh_karton_predmeta
+             -Dsonar.organization=andjelaiteh
              -Dsonar.host.url=https://sonarcloud.io
              -Dsonar.login=${{ secrets.SONAR_TOKEN }}
