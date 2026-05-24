@@ -6,6 +6,8 @@ package com.andjela.karton_predmeta.controller;
 
 import com.andjela.karton_predmeta.dto.CreatePredmetLiteraturaDto;
 import com.andjela.karton_predmeta.service.LiteraturaService;
+import exception.NotFoundException;
+import exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,13 +32,13 @@ public class LiteraturaController {
   }
 
   @PostMapping
-  public ResponseEntity<Void> create(@RequestBody CreatePredmetLiteraturaDto dto) throws Exception {
+  public ResponseEntity<Void> create(@RequestBody CreatePredmetLiteraturaDto dto){
     service.createForPredmet(dto);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<String> handle(Exception e) {
+  @ExceptionHandler({ValidationException.class, NotFoundException.class})
+  public ResponseEntity<String> handle(RuntimeException e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
   }
     

@@ -52,7 +52,7 @@ public class NastavaServiceImpl implements NastavaService{
 
         // validacija: nema duplih tipova, brojCasova >= 0, zbir=4
         int sum = 0;
-        Set<Long> seenTipIds = new HashSet<>();
+        
 
         for (NastavaStavkaDto s : dto.getStavke()) {
             

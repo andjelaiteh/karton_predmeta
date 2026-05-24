@@ -5,7 +5,7 @@
 package com.andjela.karton_predmeta.service;
 
 import com.andjela.karton_predmeta.dto.PredmetDto;
-import org.springframework.stereotype.Service;
+
 
 /**
  *

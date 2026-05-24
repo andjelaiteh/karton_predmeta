@@ -6,6 +6,8 @@ package com.andjela.karton_predmeta.controller;
 
 import com.andjela.karton_predmeta.dto.CreateNastavaDto;
 import com.andjela.karton_predmeta.service.NastavaService;
+import exception.NotFoundException;
+import exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,13 +29,13 @@ public class NastavaController {
         this.nastavaService = nastavaService;
     }
       @PostMapping
-    public ResponseEntity<Void> create(@RequestBody CreateNastavaDto dto) throws Exception {
+    public ResponseEntity<Void> create(@RequestBody CreateNastavaDto dto){
         nastavaService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handle(Exception e) {
+    @ExceptionHandler({ValidationException.class, NotFoundException.class})
+    public ResponseEntity<String> handle(RuntimeException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

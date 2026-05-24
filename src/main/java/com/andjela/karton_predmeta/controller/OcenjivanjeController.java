@@ -6,6 +6,8 @@ package com.andjela.karton_predmeta.controller;
 
 import com.andjela.karton_predmeta.dto.CreateOcenjivanjeDto;
 import com.andjela.karton_predmeta.service.OcenjivanjeService;
+import exception.NotFoundException;
+import exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,13 +31,13 @@ public class OcenjivanjeController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody CreateOcenjivanjeDto dto) throws Exception {
+    public ResponseEntity<Void> create(@RequestBody CreateOcenjivanjeDto dto){
         service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handle(Exception e) {
+    @ExceptionHandler({ValidationException.class, NotFoundException.class})
+    public ResponseEntity<String> handle(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }
