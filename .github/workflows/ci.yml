@@ -33,4 +33,4 @@ jobs:
              -Dsonar.projectKey=andjela_karton_predmeta
              -Dsonar.organization=andjela
              -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
