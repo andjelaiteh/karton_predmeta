@@ -31,7 +31,6 @@ public class NastavnikController {
         this.service = service;
     }
 
-    // dropdown
     @GetMapping
     public List<NastavnikDto> getAll() {
         return service.getAllNastavnici();

@@ -25,6 +25,7 @@ public class PredmetServiceImpl implements PredmetService{
         this.predmetRepository = predmetRepository;
         this.predmetMapper = predmetMapper;
     }
+    
     @Override
     public PredmetDto save(PredmetDto predmetDto) throws Exception {
          if (predmetDto.getNaziv() == null || predmetDto.getNaziv().trim().isEmpty()) {

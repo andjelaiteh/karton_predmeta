@@ -52,11 +52,6 @@ public class LiteraturaServiceImpl implements LiteraturaService{
         this.autorRepo = autorRepo;
     }
   
-  
-
-
-    
-
     @Override
     @Transactional
     public void createForPredmet(CreatePredmetLiteraturaDto dto) {
