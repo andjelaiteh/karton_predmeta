@@ -25,7 +25,7 @@ public class PredmetController {
     }
 
      @PostMapping
-    public ResponseEntity<PredmetDto> save(@RequestBody PredmetDto dto) throws Exception {
+    public ResponseEntity<PredmetDto> save(@RequestBody PredmetDto dto) {
         return new ResponseEntity<>(predmetService.save(dto), HttpStatus.CREATED);
     }
 

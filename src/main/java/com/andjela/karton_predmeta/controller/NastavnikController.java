@@ -37,7 +37,7 @@ public class NastavnikController {
     // dodavanje na predmet
     @PostMapping("/angazovanje")
     public ResponseEntity<Void> dodaj(@RequestBody DodajNastavnikeNaPredmetDto dto)
-            throws Exception {
+            {
         service.dodajNastavnike(dto.getPredmetId(), dto.getNastavnikIds());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

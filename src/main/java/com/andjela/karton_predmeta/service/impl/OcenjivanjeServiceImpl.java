@@ -77,7 +77,7 @@ public class OcenjivanjeServiceImpl implements OcenjivanjeService{
         }
     }
 
-    private int validateStavka(OcenjivanjeStavkaDto s) throws Exception {
+    private int validateStavka(OcenjivanjeStavkaDto s) throws ValidationException {
         if (s == null) throw new ValidationException("Stavka ne sme biti null.");
         if (s.getNazivObaveze() == null || s.getNazivObaveze().trim().isEmpty())
             throw new ValidationException("Naziv obaveze je obavezan.");

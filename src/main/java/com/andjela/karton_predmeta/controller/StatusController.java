@@ -29,7 +29,7 @@ public class StatusController {
     }
 
    @PostMapping
-    public ResponseEntity<Predmet> create(@RequestBody CreateStatusDto dto) throws Exception {
+    public ResponseEntity<Predmet> create(@RequestBody CreateStatusDto dto){
     Predmet saved = createStatusService.create(dto);
     return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 }

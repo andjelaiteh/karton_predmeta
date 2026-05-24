@@ -4,7 +4,7 @@
  */
 package com.andjela.karton_predmeta.controller;
 
-import com.andjela.karton_predmeta.controller.TipStatusaController;
+
 import com.andjela.karton_predmeta.dto.TipStatusaDto;
 import com.andjela.karton_predmeta.entity.TipStatusa;
 import com.andjela.karton_predmeta.mapper.impl.TipStatusaDtoEntityMapper;
@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,7 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
  */
 
 @ExtendWith(MockitoExtension.class)
-public class TipStatusaControllerTest {
+class TipStatusaControllerTest {
     @Mock
     private TipStatusaRepository repo;
 

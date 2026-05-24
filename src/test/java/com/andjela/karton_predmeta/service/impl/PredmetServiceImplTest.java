@@ -24,7 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
  */
 
 @ExtendWith(MockitoExtension.class)
-public class PredmetServiceImplTest {
+class PredmetServiceImplTest {
     @Mock
     private PredmetRepository predmetRepository;
 
@@ -37,7 +37,7 @@ public class PredmetServiceImplTest {
     }
     
     @Test
-    void save_uspesnoCuvaPredmet() throws Exception {
+    void save_uspesnoCuvaPredmet()  {
         PredmetDto dto = new PredmetDto();
         dto.setId(1L);
         dto.setNaziv("Automatizacija razvoja softvera");

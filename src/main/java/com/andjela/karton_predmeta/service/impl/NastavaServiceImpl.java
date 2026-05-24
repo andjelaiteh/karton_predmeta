@@ -16,8 +16,6 @@ import com.andjela.karton_predmeta.service.NastavaService;
 import exception.NotFoundException;
 import exception.ValidationException;
 import jakarta.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Set;
 import org.springframework.stereotype.Service;
 
 /**

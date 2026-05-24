@@ -122,7 +122,7 @@ public class LiteraturaServiceImpl implements LiteraturaService{
     }}
 
     private void validate(CreateLiteraturaStavkaDto s) {
-        if (s == null) throw new RuntimeException("Stavka je null");
+        if (s == null) throw new ValidationException("Stavka je null");
         if (s.getNaslov() == null || s.getNaslov().trim().isEmpty())
             throw new ValidationException("naslov je obavezan");
         if (s.getGodina() == null || s.getGodina() < 0)
