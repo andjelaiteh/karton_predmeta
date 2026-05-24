@@ -293,6 +293,7 @@
     }
   
 let literatura = [];
+let tipLiteratureOptionsHtml = "";
 
 function ucitajTipLiterature() {
   fetch(API_BASE + "/tip-literature")
@@ -301,7 +302,7 @@ function ucitajTipLiterature() {
       return res.json();
     })
     .then(data => {
-      let tipLiteratureOptionsHtml = '<option value="">-- Izaberi tip --</option>';
+      tipLiteratureOptionsHtml = '<option value="">-- Izaberi tip --</option>';
 
       data.forEach(t => {
         tipLiteratureOptionsHtml += `<option value="${t.id}">${t.naziv}</option>`;
