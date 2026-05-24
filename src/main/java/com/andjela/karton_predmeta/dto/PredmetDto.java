@@ -4,7 +4,7 @@
  */
 package com.andjela.karton_predmeta.dto;
 
-import java.util.List;
+
 
 /**
  *

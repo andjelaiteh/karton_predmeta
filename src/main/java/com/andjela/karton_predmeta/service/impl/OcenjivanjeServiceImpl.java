@@ -15,6 +15,7 @@ import com.andjela.karton_predmeta.repository.OcenjivanjeRepository;
 import com.andjela.karton_predmeta.repository.PredmetRepository;
 import com.andjela.karton_predmeta.repository.TipObavezeRepository;
 import com.andjela.karton_predmeta.service.OcenjivanjeService;
+import exception.ValidationException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -42,43 +43,47 @@ public class OcenjivanjeServiceImpl implements OcenjivanjeService{
 
     @Override
     @Transactional
-    public void create(CreateOcenjivanjeDto dto) throws Exception {
+    public void create(CreateOcenjivanjeDto dto){
 
-        if (dto == null) throw new Exception("Request body je obavezan.");
-        if (dto.getPredmetId() == null) throw new Exception("predmetId je obavezan.");
-
-        List<OcenjivanjeStavkaDto> predispitne = dto.getPredispitne() == null ? List.of() : dto.getPredispitne();
-        List<OcenjivanjeStavkaDto> ispitne = dto.getIspitne() == null ? List.of() : dto.getIspitne();
-
-        if (predispitne.isEmpty() && ispitne.isEmpty()) {
-            throw new Exception("Morate uneti bar jednu stavku ocenjivanja.");
+        try {
+            if (dto == null) throw new ValidationException("Request body je obavezan.");
+            if (dto.getPredmetId() == null) throw new ValidationException("predmetId je obavezan.");
+            
+            List<OcenjivanjeStavkaDto> predispitne = dto.getPredispitne() == null ? List.of() : dto.getPredispitne();
+            List<OcenjivanjeStavkaDto> ispitne = dto.getIspitne() == null ? List.of() : dto.getIspitne();
+            
+            if (predispitne.isEmpty() && ispitne.isEmpty()) {
+                throw new ValidationException("Morate uneti bar jednu stavku ocenjivanja.");
+            }
+            
+            int sum = 0;
+            for (OcenjivanjeStavkaDto s : predispitne) sum += validateStavka(s);
+            for (OcenjivanjeStavkaDto s : ispitne) sum += validateStavka(s);
+            
+            if (sum != 100) {
+                throw new ValidationException("Ukupan zbir poena mora biti 100.");
+            }
+            
+            Predmet predmet = predmetRepo.findById(dto.getPredmetId())
+                    .orElseThrow(() -> new ValidationException("Predmet ne postoji."));
+            
+            TipObaveze tipPred = findOrCreateTip("PREDISPITNA");
+            TipObaveze tipIsp = findOrCreateTip("ISPITNA");
+            
+            saveGroup(predispitne, predmet, tipPred);
+            saveGroup(ispitne, predmet, tipIsp);
+        } catch (Exception ex) {
+            System.getLogger(OcenjivanjeServiceImpl.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-
-        int sum = 0;
-        for (OcenjivanjeStavkaDto s : predispitne) sum += validateStavka(s);
-        for (OcenjivanjeStavkaDto s : ispitne) sum += validateStavka(s);
-
-        if (sum != 100) {
-            throw new Exception("Ukupan zbir poena mora biti 100.");
-        }
-
-        Predmet predmet = predmetRepo.findById(dto.getPredmetId())
-                .orElseThrow(() -> new Exception("Predmet ne postoji."));
-
-        TipObaveze tipPred = findOrCreateTip("PREDISPITNA");
-        TipObaveze tipIsp = findOrCreateTip("ISPITNA");
-
-        saveGroup(predispitne, predmet, tipPred);
-        saveGroup(ispitne, predmet, tipIsp);
     }
 
     private int validateStavka(OcenjivanjeStavkaDto s) throws Exception {
-        if (s == null) throw new Exception("Stavka ne sme biti null.");
+        if (s == null) throw new ValidationException("Stavka ne sme biti null.");
         if (s.getNazivObaveze() == null || s.getNazivObaveze().trim().isEmpty())
-            throw new Exception("Naziv obaveze je obavezan.");
-        if (s.getPoeni() == null) throw new Exception("Poeni su obavezni.");
-        if (s.getPoeni() < 0) throw new Exception("Poeni ne smeju biti negativni.");
-        if (s.getObavezna() == null) throw new Exception("Obavezna mora biti true/false.");
+            throw new ValidationException("Naziv obaveze je obavezan.");
+        if (s.getPoeni() == null) throw new ValidationException("Poeni su obavezni.");
+        if (s.getPoeni() < 0) throw new ValidationException("Poeni ne smeju biti negativni.");
+        if (s.getObavezna() == null) throw new ValidationException("Obavezna mora biti true/false.");
         return s.getPoeni();
     }
 

@@ -4,7 +4,6 @@
  */
 package com.andjela.karton_predmeta.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 /**
  *

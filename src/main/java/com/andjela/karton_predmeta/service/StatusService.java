@@ -12,5 +12,5 @@ import com.andjela.karton_predmeta.entity.Predmet;
  * @author Andjela
  */
 public interface StatusService {
-    Predmet create(CreateStatusDto csd) throws Exception;
+    Predmet create(CreateStatusDto csd);
 }

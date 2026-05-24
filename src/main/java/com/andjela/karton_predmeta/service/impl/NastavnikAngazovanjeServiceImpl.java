@@ -12,6 +12,7 @@ import com.andjela.karton_predmeta.repository.AngazovanjeRepository;
 import com.andjela.karton_predmeta.repository.NastavnikRepository;
 import com.andjela.karton_predmeta.repository.PredmetRepository;
 import com.andjela.karton_predmeta.service.NastavnikAngazovanjaService;
+import exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +49,13 @@ public class NastavnikAngazovanjeServiceImpl implements NastavnikAngazovanjaServ
         return result;}
 
     @Override
-    public void dodajNastavnike(Long predmetId, List<Long> nastavnikIds) throws Exception {
+    public void dodajNastavnike(Long predmetId, List<Long> nastavnikIds) {
          Predmet predmet = predmetRepo.findById(predmetId)
-                .orElseThrow(() -> new Exception("Predmet ne postoji"));
+                .orElseThrow(() -> new NotFoundException("Predmet ne postoji"));
 
         for (Long nastavnikId : nastavnikIds) {
             Nastavnik nastavnik = nastavnikRepo.findById(nastavnikId)
-                    .orElseThrow(() -> new Exception("Nastavnik ne postoji"));
+                    .orElseThrow(() -> new NotFoundException("Nastavnik ne postoji"));
 
             Angazovanje a = new Angazovanje();
             a.setPredmet(predmet);

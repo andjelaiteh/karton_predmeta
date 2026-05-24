@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface NastavnikAngazovanjaService {
      List<NastavnikDto> getAllNastavnici();
-    void dodajNastavnike(Long predmetId, List<Long> nastavnikIds) throws Exception;
+    void dodajNastavnike(Long predmetId, List<Long> nastavnikIds);
 
 }

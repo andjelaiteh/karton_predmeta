@@ -21,8 +21,9 @@ import com.andjela.karton_predmeta.repository.PredmetLiteraturaRepository;
 import com.andjela.karton_predmeta.repository.PredmetRepository;
 import com.andjela.karton_predmeta.repository.TipLiteratureRepository;
 import com.andjela.karton_predmeta.service.LiteraturaService;
+import exception.NotFoundException;
+import exception.ValidationException;
 import jakarta.transaction.Transactional;
-import java.util.Arrays;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -55,19 +56,19 @@ public class LiteraturaServiceImpl implements LiteraturaService{
     @Override
     @Transactional
     public void createForPredmet(CreatePredmetLiteraturaDto dto) {
-        if (dto == null) throw new RuntimeException("DTO je null");
-        if (dto.getPredmetId() == null) throw new RuntimeException("predmetId je obavezan");
+        if (dto == null) throw new ValidationException("DTO je null");
+        if (dto.getPredmetId() == null) throw new ValidationException("predmetId je obavezan");
         if (dto.getStavke() == null || dto.getStavke().isEmpty())
-            throw new RuntimeException("stavke su obavezne");
+            throw new ValidationException("stavke su obavezne");
 
         Predmet predmet = predmetRepo.findById(dto.getPredmetId())
-                .orElseThrow(() -> new RuntimeException("Predmet ne postoji"));
+                .orElseThrow(() -> new NotFoundException("Predmet ne postoji"));
 
         for (CreateLiteraturaStavkaDto s : dto.getStavke()) {
             validate(s);
 
             TipLiterature tip = tipRepo.findById(s.getTipLiteratureId())
-                    .orElseThrow(() -> new RuntimeException("Tip literature ne postoji"));
+                    .orElseThrow(() -> new ValidationException("Tip literature ne postoji"));
 
             Literatura lit = new Literatura();
             lit.setNaslov(s.getNaslov());
@@ -123,13 +124,13 @@ public class LiteraturaServiceImpl implements LiteraturaService{
     private void validate(CreateLiteraturaStavkaDto s) {
         if (s == null) throw new RuntimeException("Stavka je null");
         if (s.getNaslov() == null || s.getNaslov().trim().isEmpty())
-            throw new RuntimeException("naslov je obavezan");
+            throw new ValidationException("naslov je obavezan");
         if (s.getGodina() == null || s.getGodina() < 0)
-            throw new RuntimeException("godina je obavezna i mora biti >= 0");
+            throw new ValidationException("godina je obavezna i mora biti >= 0");
         if (s.getIzdavacNaziv() == null || s.getIzdavacNaziv().trim().isEmpty())
-            throw new RuntimeException("izdavacNaziv je obavezan");
+            throw new ValidationException("izdavacNaziv je obavezan");
         if (s.getTipLiteratureId() == null)
-            throw new RuntimeException("tipLiteratureId je obavezan");
+            throw new ValidationException("tipLiteratureId je obavezan");
     }
     
   

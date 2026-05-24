@@ -11,5 +11,5 @@ import com.andjela.karton_predmeta.dto.CreateOcenjivanjeDto;
  * @author Andjela
  */
 public interface OcenjivanjeService {
-     void create(CreateOcenjivanjeDto dto) throws Exception;
+     void create(CreateOcenjivanjeDto dto);
 }

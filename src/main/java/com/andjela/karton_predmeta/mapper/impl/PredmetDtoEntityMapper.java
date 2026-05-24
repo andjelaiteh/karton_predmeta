@@ -18,13 +18,13 @@ public class PredmetDtoEntityMapper implements DtoEntityMapper<PredmetDto, Predm
 
     @Override
     public PredmetDto toDto(Predmet e) {
-        if (e == null) return null;
+        if (e == null) { return null;}
         return new PredmetDto(e.getId(), e.getNaziv(), e.getEspb());
     }
 
     @Override
     public Predmet toEntity(PredmetDto t) {
-       if (t == null) return null;
+       if (t == null) {return null;}
         return new Predmet(t.getId(), t.getNaziv(), t.getEspb());
     }
     

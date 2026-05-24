@@ -16,6 +16,8 @@ import com.andjela.karton_predmeta.repository.TipStatusaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import com.andjela.karton_predmeta.service.StatusService;
+import exception.NotFoundException;
+import exception.ValidationException;
 
 /**
  *
@@ -39,21 +41,21 @@ public class StatusServiceImpl implements StatusService{
     
     @Override
     @Transactional
-    public Predmet create(CreateStatusDto csd) throws Exception {
+    public Predmet create(CreateStatusDto csd) {
         if (csd.getNaziv() == null || csd.getNaziv().trim().isEmpty())
-            throw new Exception("Naziv predmeta je obavezan.");
+            throw new ValidationException("Naziv predmeta je obavezan.");
         if (csd.getEspb() == null || csd.getEspb() <= 0)
-            throw new Exception("ESPB mora biti pozitivan broj.");
+            throw new ValidationException("ESPB mora biti pozitivan broj.");
         if (csd.getProgramId() == null)
-            throw new Exception("Program je obavezan.");
+            throw new ValidationException("Program je obavezan.");
         if (csd.getTipStatusaId() == null)
-            throw new Exception("Tip statusa je obavezan.");
+            throw new ValidationException("Tip statusa je obavezan.");
 
         StudijskiProgram program = programRepo.findById(csd.getProgramId())
-                .orElseThrow(() -> new Exception("Program ne postoji."));
+                .orElseThrow(() -> new NotFoundException("Program ne postoji."));
 
         TipStatusa tipStatusa = tipStatusaRepo.findById(csd.getTipStatusaId())
-                .orElseThrow(() -> new Exception("Tip statusa ne postoji."));
+                .orElseThrow(() -> new NotFoundException("Tip statusa ne postoji."));
 
         Predmet predmet = new Predmet(null, csd.getNaziv().trim(), csd.getEspb());
         predmet = predmetRepo.save(predmet);

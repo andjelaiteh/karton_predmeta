@@ -11,5 +11,5 @@ import com.andjela.karton_predmeta.dto.CreateNastavaDto;
  * @author Andjela
  */
 public interface NastavaService {
-     void create(CreateNastavaDto dto) throws Exception;
+     void create(CreateNastavaDto dto);
 }

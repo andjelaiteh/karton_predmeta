@@ -9,6 +9,7 @@ import com.andjela.karton_predmeta.entity.Predmet;
 import com.andjela.karton_predmeta.mapper.impl.PredmetDtoEntityMapper;
 import com.andjela.karton_predmeta.repository.PredmetRepository;
 import com.andjela.karton_predmeta.service.PredmetService;
+import exception.ValidationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,12 +28,12 @@ public class PredmetServiceImpl implements PredmetService{
     }
     
     @Override
-    public PredmetDto save(PredmetDto predmetDto) throws Exception {
+    public PredmetDto save(PredmetDto predmetDto) {
          if (predmetDto.getNaziv() == null || predmetDto.getNaziv().trim().isEmpty()) {
-            throw new Exception("Naziv predmeta je obavezan.");
+            throw new ValidationException("Naziv predmeta je obavezan.");
         }
         if (predmetDto.getEspb() == null || predmetDto.getEspb() <= 0) {
-            throw new Exception("ESPB mora biti pozitivan broj.");
+            throw new ValidationException("ESPB mora biti pozitivan broj.");
         }
 
         Predmet predmet = predmetMapper.toEntity(predmetDto);

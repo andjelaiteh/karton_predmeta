@@ -6,8 +6,6 @@ package com.andjela.karton_predmeta.controller;
 
 import com.andjela.karton_predmeta.dto.DodajNastavnikeNaPredmetDto;
 import com.andjela.karton_predmeta.dto.NastavnikDto;
-import com.andjela.karton_predmeta.entity.Nastavnik;
-import com.andjela.karton_predmeta.repository.NastavnikRepository;
 import com.andjela.karton_predmeta.service.NastavnikAngazovanjaService;
 import java.util.List;
 import org.springframework.http.HttpStatus;

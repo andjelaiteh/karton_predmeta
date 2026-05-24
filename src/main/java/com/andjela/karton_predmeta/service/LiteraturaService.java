@@ -11,5 +11,5 @@ import com.andjela.karton_predmeta.dto.CreatePredmetLiteraturaDto;
  * @author Andjela
  */
 public interface LiteraturaService {
-    void createForPredmet(CreatePredmetLiteraturaDto dto) throws Exception;
+    void createForPredmet(CreatePredmetLiteraturaDto dto);
 }

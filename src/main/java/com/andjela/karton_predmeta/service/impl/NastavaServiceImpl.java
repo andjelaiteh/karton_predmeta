@@ -13,6 +13,8 @@ import com.andjela.karton_predmeta.repository.NastavaRepository;
 import com.andjela.karton_predmeta.repository.PredmetRepository;
 import com.andjela.karton_predmeta.repository.TipNastaveRepository;
 import com.andjela.karton_predmeta.service.NastavaService;
+import exception.NotFoundException;
+import exception.ValidationException;
 import jakarta.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,14 +40,14 @@ public class NastavaServiceImpl implements NastavaService{
     
     @Override
     @Transactional
-    public void create(CreateNastavaDto dto) throws Exception {
-         if (dto == null) throw new Exception("Request body je obavezan.");
-        if (dto.getPredmetId() == null) throw new Exception("predmetId je obavezan.");
-        if (dto.getStavke() == null) throw new Exception("stavke su obavezne.");
+    public void create(CreateNastavaDto dto){
+        if (dto == null) throw new ValidationException("Request body je obavezan.");
+        if (dto.getPredmetId() == null) throw new ValidationException ("predmetId je obavezan.");
+        if (dto.getStavke() == null) throw new ValidationException("stavke su obavezne.");
 
         // saljes i nule -> mora tacno 5 stavki
         if (dto.getStavke().size() != 5) {
-            throw new Exception("Moras poslati tacno 5 stavki (za svih 5 tipova nastave).");
+            throw new ValidationException("Moras poslati tacno 5 stavki (za svih 5 tipova nastave).");
         }
 
         // validacija: nema duplih tipova, brojCasova >= 0, zbir=4
@@ -54,27 +56,27 @@ public class NastavaServiceImpl implements NastavaService{
 
         for (NastavaStavkaDto s : dto.getStavke()) {
             
-            if (s == null) throw new Exception("stavke ne smeju sadrzati null.");
-            if (s.getTipNastaveId() == null) throw new Exception("tipNastaveId je obavezan.");
-            if (s.getBrojCasova() == null) throw new Exception("brojCasova je obavezan.");
-            if (s.getBrojCasova() < 0) throw new Exception("brojCasova ne sme biti negativan.");
+            if (s == null) throw new ValidationException("stavke ne smeju sadrzati null.");
+            if (s.getTipNastaveId() == null)throw new ValidationException("tipNastaveId je obavezan.");
+            if (s.getBrojCasova() == null) throw new ValidationException("brojCasova je obavezan.");
+            if (s.getBrojCasova() < 0) throw new ValidationException("brojCasova ne sme biti negativan.");
 
             sum += s.getBrojCasova();
         }
 
         if (sum != 4) {
-            throw new Exception("Zbir casova mora biti tacno 4");
+            throw new ValidationException("Zbir casova mora biti tacno 4");
         }
 
         // predmet mora postojati (ako ga kreiras ranije u istoj transakciji, bice tu)
         Predmet predmet = predmetRepo.findById(dto.getPredmetId())
-                .orElseThrow(() -> new Exception("Predmet ne postoji."));
+                .orElseThrow(() -> new NotFoundException("Predmet ne postoji."));
 
         // INSERT 5 redova
         for (NastavaStavkaDto s : dto.getStavke()) {
 
             TipNastave tip = tipNastaveRepo.findById(s.getTipNastaveId())
-                    .orElseThrow(() -> new Exception("Tip nastave ne postoji: " + s.getTipNastaveId()));
+                    .orElseThrow(() -> new NotFoundException("Tip nastave ne postoji: " + s.getTipNastaveId()));
 
             Nastava n = new Nastava();
             n.setPredmet(predmet);

@@ -18,13 +18,13 @@ public class StudijskiProgramDtoEntityMapper implements DtoEntityMapper<Studijsk
 
     @Override
     public StudijskiProgramDto toDto(StudijskiProgram e) {
-       if (e == null) return null;
+       if (e == null) {return null;}
         return new StudijskiProgramDto(e.getId(), e.getNaziv());
     }
 
     @Override
     public StudijskiProgram toEntity(StudijskiProgramDto t) {
-         if (t == null) return null;
+         if (t == null) {return null;}
         return new StudijskiProgram(t.getId(), t.getNaziv()); }
     
 }
