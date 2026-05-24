@@ -19,7 +19,9 @@ public class TipZvanja {
     @Column(name = "naziv", nullable = false)
     private String naziv;
 
-    public TipZvanja() {}
+    public TipZvanja() {
+        // Default constructor required by JPA
+    }
 
     public Integer getId() {
         return id;

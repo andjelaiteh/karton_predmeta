@@ -301,7 +301,7 @@ function ucitajTipLiterature() {
       return res.json();
     })
     .then(data => {
-      tipLiteratureOptionsHtml = '<option value="">-- Izaberi tip --</option>';
+      let tipLiteratureOptionsHtml = '<option value="">-- Izaberi tip --</option>';
 
       data.forEach(t => {
         tipLiteratureOptionsHtml += `<option value="${t.id}">${t.naziv}</option>`;
@@ -606,6 +606,29 @@ function ucitajStatuse() {
     });
 }
 
+function validirajOsnovnePodatke(naziv, espb, programId, tipStatusaId) {
+    if (!naziv) {
+        alert("Unesi naziv predmeta");
+        return false;
+    }
+    if (!espb && espb !== 0) {
+        alert("Unesi ESPB poene");
+        return false;
+    }
+    if (!programId) {
+        alert("Izaberi studijski program");
+        return false;
+    }
+    if (!tipStatusaId) {
+        alert("Izaberi status predmeta");
+        return false;
+    }
+    if (!izabraniNastavnici || izabraniNastavnici.length === 0) {
+        alert("Dodaj bar jednog nastavnika");
+        return false;
+    }
+    return true;
+}
 async function sacuvajPredmet() {
   try {
     const naziv = document.getElementById("nazivPredmeta").value.trim();
@@ -613,14 +636,9 @@ async function sacuvajPredmet() {
     const programId = Number(document.getElementById("programSelect").value);
     const tipStatusaId = Number(document.getElementById("statusSelect").value);
 
-    if (!naziv) { alert("Unesi naziv predmeta"); return; }
-    if (!espb && espb !== 0) { alert("Unesi ESPB poene"); return; }
-    if (!programId) { alert("Izaberi studijski program"); return; }
-    if (!tipStatusaId) { alert("Izaberi status predmeta"); return; }
-    if (!izabraniNastavnici || izabraniNastavnici.length === 0) {
-      alert("Dodaj bar jednog nastavnika");
-      return;
-    }
+   if (!validirajOsnovnePodatke(naziv, espb, programId, tipStatusaId)) {
+    return;
+}
 
     const getInt = (id) => {
       const el = document.getElementById(id);
