@@ -127,7 +127,7 @@
 <table style="width:100%; border-collapse:collapse; background:white;">
   <thead>
     <tr>
-      <th rowspan="2" style="border:1px solid black; padding:8px; text-align:left;">
+      <th scope="col" rowspan="2" style="border:1px solid black; padding:8px; text-align:left;">
         Broj časova aktivne nastave
       </th>
       <th scope="col" rowspan="2" style="border:1px solid black; padding:8px;">Teorijska nastava</th>
@@ -311,7 +311,7 @@ function ucitajTipLiterature() {
     })
     .catch(err => {
       console.error("Tip literature greška:", err);
-      let tipLiteratureOptionsHtml = '<option value="">Greška pri učitavanju</option>';
+      tipLiteratureOptionsHtml = '<option value="">Greška pri učitavanju</option>';
       renderLiteratura();
     });
 }
