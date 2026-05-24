@@ -28,6 +28,9 @@ jobs:
         run: mvn clean verify
 
       - name: SonarQube Scan
-        run: mvn sonar:sonar -Dsonar.host.url=https://sonarcloud.io
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
+             mvn sonar:sonar
+             -Dsonar.projectKey=andjela_karton_predmeta
+             -Dsonar.organization=andjela
+             -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
