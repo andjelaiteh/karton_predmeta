@@ -311,7 +311,7 @@ function ucitajTipLiterature() {
     })
     .catch(err => {
       console.error("Tip literature greška:", err);
-      tipLiteratureOptionsHtml = '<option value="">Greška pri učitavanju</option>';
+      let tipLiteratureOptionsHtml = '<option value="">Greška pri učitavanju</option>';
       renderLiteratura();
     });
 }
