@@ -76,3 +76,5 @@ C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\an
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\service\StatusService.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\service\StudijskiProgramService.java
 C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\com\andjela\karton_predmeta\service\TipStatusaService.java
+C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\exception\NotFoundException.java
+C:\Users\Andjela\Documents\NetBeansProjects\karton_predmeta\src\main\java\exception\ValidationException.java

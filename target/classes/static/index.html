@@ -27,7 +27,7 @@
     .nastavnik-wrapper { display:flex; gap:10px; width:100%; align-items:center; padding: 6px 10px; }
     .nastavnik-wrapper select { flex:1; padding:10px; border:1px solid #ddd; border-radius:8px; }
     .btn { width:auto; padding:10px 14px; border:none; border-radius:10px; cursor:pointer; font-weight:bold; }
-    .btn.primary { background:#2b6cff; color:white; }
+    .btn.primary { background:#0047B3; color:white; }
     .btn.danger { background:#d63b3b; color:white; }
 
     #listaNastavnika { padding: 10px; }
@@ -62,31 +62,31 @@
     <div class="form-table">
 
       <div class="form-row">
-        <label>Studijski program</label>
+        <label for="programSelect">Studijski program</label>
         <select id="programSelect">
           <option value="">Učitavanje...</option>
         </select>
       </div>
 
       <div class="form-row">
-        <label>Naziv predmeta</label>
+        <label for="nazivPredmeta">Naziv predmeta</label>
         <input type="text" id="nazivPredmeta" placeholder="Unesi naziv predmeta">
       </div>
 
       <div class="form-row">
-  <label>Status predmeta</label>
+  <label for="statusSelect">Status predmeta</label>
   <select id="statusSelect">
     <option value="">Učitavanje...</option>
   </select>
   </div>
 
       <div class="form-row">
-        <label>Broj ESPB</label>
+        <label for="espbInput">Broj ESPB</label>
         <input type="number" id="espbInput" min="0" placeholder="npr. 6">
       </div>
 
       <div class="form-row">
-        <label>Nastavnici</label>
+        <label for="nastavnikSelect">Nastavnici</label>
         <div style="flex:1;">
           <div class="nastavnik-wrapper">
             <select id="nastavnikSelect">
@@ -127,17 +127,17 @@
 <table style="width:100%; border-collapse:collapse; background:white;">
   <thead>
     <tr>
-      <th rowspan="2" style="border:1px solid black; padding:8px; text-align:left;">
+      <th scope="col" rowspan="2" style="border:1px solid black; padding:8px; text-align:left;">
         Broj časova aktivne nastave
       </th>
-      <th rowspan="2" style="border:1px solid black; padding:8px;">Teorijska nastava</th>
-      <th colspan="3" style="border:1px solid black; padding:8px;">Praktična nastava</th>
-      <th rowspan="2" style="border:1px solid black; padding:8px;">Ostali časovi</th>
+      <th scope="col" rowspan="2" style="border:1px solid black; padding:8px;">Teorijska nastava</th>
+      <th scope="col" colspan="3" style="border:1px solid black; padding:8px;">Praktična nastava</th>
+      <th scope="col" rowspan="2" style="border:1px solid black; padding:8px;">Ostali časovi</th>
     </tr>
     <tr>
-      <th style="border:1px solid black; padding:8px;">Vežbe</th>
-      <th style="border:1px solid black; padding:8px;">DON</th>
-      <th style="border:1px solid black; padding:8px;">SIR</th>
+      <th scope="col" style="border:1px solid black; padding:8px;">Vežbe</th>
+      <th scope="col" style="border:1px solid black; padding:8px;">DON</th>
+      <th scope="col" style="border:1px solid black; padding:8px;">SIR</th>
     </tr>
   </thead>
 
@@ -178,17 +178,17 @@
 <table style="width:100%; border-collapse:collapse; background:white;">
   <thead>
     <tr>
-      <th colspan="3" style="border:1px solid black; padding:8px;">Predispitne obaveze</th>
-      <th colspan="3" style="border:1px solid black; padding:8px;">Završni ispit</th>
+      <th scope="col" colspan="3" style="border:1px solid black; padding:8px;">Predispitne obaveze</th>
+      <th scope="col" colspan="3" style="border:1px solid black; padding:8px;">Završni ispit</th>
     </tr>
     <tr>
-      <th style="border:1px solid black; padding:8px;">Naziv</th>
-      <th style="border:1px solid black; padding:8px;">Obavezna</th>
-      <th style="border:1px solid black; padding:8px;">Poena</th>
+      <th scope="col" style="border:1px solid black; padding:8px;">Naziv</th>
+      <th scope="col" style="border:1px solid black; padding:8px;">Obavezna</th>
+      <th scope="col" style="border:1px solid black; padding:8px;">Poena</th>
 
-      <th style="border:1px solid black; padding:8px;">Naziv</th>
-      <th style="border:1px solid black; padding:8px;">Obavezna</th>
-      <th style="border:1px solid black; padding:8px;">Poena</th>
+      <th scope="col" style="border:1px solid black; padding:8px;">Naziv</th>
+      <th scope="col" style="border:1px solid black; padding:8px;">Obavezna</th>
+      <th scope="col" style="border:1px solid black; padding:8px;">Poena</th>
     </tr>
   </thead>
 
@@ -293,6 +293,7 @@
     }
   
 let literatura = [];
+let tipLiteratureOptionsHtml = "";
 
 function ucitajTipLiterature() {
   fetch(API_BASE + "/tip-literature")
@@ -443,8 +444,8 @@ function escapeHtml(str) {
 const CAS_INPUT_IDS = ["casTeorija", "casVezbe", "casDON", "casSIR", "casOstali"];
 
 function _getInt(el) {
-  const v = parseInt(el.value || "0", 10);
-  return isNaN(v) ? 0 : Math.max(0, v);
+    const v = Number.parseInt(el.value || "0", 10);
+    return Number.isNaN(v) ? 0 : Math.max(0, v);
 }
 
 function _sumCasova() {
@@ -454,7 +455,7 @@ function _sumCasova() {
   }, 0);
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+globalThis.addEventListener("DOMContentLoaded", () => {
   CAS_INPUT_IDS.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -549,8 +550,8 @@ function _daNeUBool(v) {
 }
 
 function _num0(v) {
-  const n = parseInt(v || "0", 10);
-  return isNaN(n) ? 0 : Math.max(0, n);
+    const n = Number.parseInt(v || "0", 10);
+    return Number.isNaN(n) ? 0 : Math.max(0, n);
 }
 
 function validirajPoene100() {
@@ -606,6 +607,29 @@ function ucitajStatuse() {
     });
 }
 
+function validirajOsnovnePodatke(naziv, espb, programId, tipStatusaId) {
+    if (!naziv) {
+        alert("Unesi naziv predmeta");
+        return false;
+    }
+    if (!espb && espb !== 0) {
+        alert("Unesi ESPB poene");
+        return false;
+    }
+    if (!programId) {
+        alert("Izaberi studijski program");
+        return false;
+    }
+    if (!tipStatusaId) {
+        alert("Izaberi status predmeta");
+        return false;
+    }
+    if (!izabraniNastavnici || izabraniNastavnici.length === 0) {
+        alert("Dodaj bar jednog nastavnika");
+        return false;
+    }
+    return true;
+}
 async function sacuvajPredmet() {
   try {
     const naziv = document.getElementById("nazivPredmeta").value.trim();
@@ -613,20 +637,15 @@ async function sacuvajPredmet() {
     const programId = Number(document.getElementById("programSelect").value);
     const tipStatusaId = Number(document.getElementById("statusSelect").value);
 
-    if (!naziv) { alert("Unesi naziv predmeta"); return; }
-    if (!espb && espb !== 0) { alert("Unesi ESPB poene"); return; }
-    if (!programId) { alert("Izaberi studijski program"); return; }
-    if (!tipStatusaId) { alert("Izaberi status predmeta"); return; }
-    if (!izabraniNastavnici || izabraniNastavnici.length === 0) {
-      alert("Dodaj bar jednog nastavnika");
-      return;
-    }
+   if (!validirajOsnovnePodatke(naziv, espb, programId, tipStatusaId)) {
+    return;
+}
 
     const getInt = (id) => {
-      const el = document.getElementById(id);
-      const v = parseInt(el?.value || "0", 10);
-      return isNaN(v) ? 0 : Math.max(0, v);
-    };
+    const el = document.getElementById(id);
+    const v = Number.parseInt(el?.value || "0", 10);
+    return Number.isNaN(v) ? 0 : Math.max(0, v);
+};
 
     const casTeorija = getInt("casTeorija");
     const casVezbe   = getInt("casVezbe");

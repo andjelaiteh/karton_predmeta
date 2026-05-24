@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StudijskiProgramServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">karton_predmeta</a> &gt; <a href="index.source.html" class="el_package">com.andjela.karton_predmeta.service.impl</a> &gt; <span class="el_source">StudijskiProgramServiceImpl.java</span></div><h1>StudijskiProgramServiceImpl.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.andjela.karton_predmeta.service.impl;
+
+import com.andjela.karton_predmeta.dto.StudijskiProgramDto;
+import com.andjela.karton_predmeta.entity.StudijskiProgram;
+import com.andjela.karton_predmeta.mapper.impl.StudijskiProgramDtoEntityMapper;
+import com.andjela.karton_predmeta.repository.StudijskiProgramRepository;
+import java.util.ArrayList;
+import java.util.List;
+import com.andjela.karton_predmeta.service.StudijskiProgramService;
+import org.springframework.stereotype.Service;
+
+/**
+ *
+ * @author Andjela
+ */
+@Service
+public class StudijskiProgramServiceImpl implements StudijskiProgramService {
+
+    private final StudijskiProgramRepository repository;
+    private final StudijskiProgramDtoEntityMapper mapper;
+
+    public StudijskiProgramServiceImpl(StudijskiProgramRepository repository,
+<span class="nc" id="L27">                                       StudijskiProgramDtoEntityMapper mapper) {</span>
+<span class="nc" id="L28">        this.repository = repository;</span>
+<span class="nc" id="L29">        this.mapper = mapper;</span>
+<span class="nc" id="L30">    }</span>
+    
+    @Override
+    public List&lt;StudijskiProgramDto&gt; findAll() {
+<span class="nc" id="L34">         List&lt;StudijskiProgram&gt; programs = repository.findAll();</span>
+<span class="nc" id="L35">        List&lt;StudijskiProgramDto&gt; dtos = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        for (StudijskiProgram p : programs) {</span>
+<span class="nc" id="L37">            dtos.add(mapper.toDto(p));</span>
+<span class="nc" id="L38">        }</span>
+<span class="nc" id="L39">        return dtos;}</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

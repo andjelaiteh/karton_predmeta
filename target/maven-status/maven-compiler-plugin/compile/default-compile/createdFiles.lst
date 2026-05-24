@@ -3,6 +3,7 @@ com\andjela\karton_predmeta\controller\OcenjivanjeController.class
 com\andjela\karton_predmeta\controller\StudijskiProgramController.class
 com\andjela\karton_predmeta\entity\Angazovanje.class
 com\andjela\karton_predmeta\entity\Nastava.class
+exception\NotFoundException.class
 com\andjela\karton_predmeta\controller\NastavaController.class
 com\andjela\karton_predmeta\repository\NastavnikRepository.class
 com\andjela\karton_predmeta\entity\StudijskiProgram.class
@@ -41,6 +42,7 @@ com\andjela\karton_predmeta\mapper\impl\PredmetDtoEntityMapper.class
 com\andjela\karton_predmeta\repository\AutorLiteraturaRepository.class
 com\andjela\karton_predmeta\dto\DodajNastavnikeNaPredmetDto.class
 com\andjela\karton_predmeta\controller\LiteraturaController.class
+exception\ValidationException.class
 com\andjela\karton_predmeta\controller\NastavnikController.class
 com\andjela\karton_predmeta\service\impl\NastavaServiceImpl.class
 com\andjela\karton_predmeta\service\impl\OcenjivanjeServiceImpl.class
