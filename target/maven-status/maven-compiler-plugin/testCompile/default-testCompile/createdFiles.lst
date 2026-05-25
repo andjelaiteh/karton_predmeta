@@ -1,2 +1,10 @@
-com\andjela\karton_predmeta\service\impl\PredmetServiceImplTest.class
+com\andjela\karton_predmeta\controller\TipLiteratureControllerTest.class
+com\andjela\karton_predmeta\controller\StudijskiProgramControllerTest.class
+com\andjela\karton_predmeta\controller\LiteraturaControllerTest.class
+com\andjela\karton_predmeta\controller\PredmetControllerTest.class
+com\andjela\karton_predmeta\controller\NastavaControllerTest.class
+com\andjela\karton_predmeta\controller\StatusControllerTest.class
 com\andjela\karton_predmeta\controller\TipStatusaControllerTest.class
+com\andjela\karton_predmeta\controller\NastavnikControllerTest.class
+com\andjela\karton_predmeta\service\impl\PredmetServiceImplTest.class
+com\andjela\karton_predmeta\controller\OcenjivanjeControllerTest.class
