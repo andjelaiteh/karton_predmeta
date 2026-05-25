@@ -24,20 +24,20 @@ import com.andjela.karton_predmeta.service.StatusService;
 public class StatusController {
      private final StatusService createStatusService;
 
-<span class="nc" id="L27">    public StatusController(StatusService createStatusService) {</span>
-<span class="nc" id="L28">        this.createStatusService = createStatusService;</span>
-<span class="nc" id="L29">    }</span>
+<span class="fc" id="L27">    public StatusController(StatusService createStatusService) {</span>
+<span class="fc" id="L28">        this.createStatusService = createStatusService;</span>
+<span class="fc" id="L29">    }</span>
 
    @PostMapping
     public ResponseEntity&lt;Predmet&gt; create(@RequestBody CreateStatusDto dto){
-<span class="nc" id="L33">    Predmet saved = createStatusService.create(dto);</span>
-<span class="nc" id="L34">    return ResponseEntity.status(HttpStatus.CREATED).body(saved);</span>
+<span class="fc" id="L33">    Predmet saved = createStatusService.create(dto);</span>
+<span class="fc" id="L34">    return ResponseEntity.status(HttpStatus.CREATED).body(saved);</span>
 }
 
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity&lt;String&gt; handle(Exception e) {
-<span class="nc" id="L40">        return new ResponseEntity&lt;&gt;(e.getMessage(), HttpStatus.BAD_REQUEST);</span>
+<span class="fc" id="L40">        return new ResponseEntity&lt;&gt;(e.getMessage(), HttpStatus.BAD_REQUEST);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

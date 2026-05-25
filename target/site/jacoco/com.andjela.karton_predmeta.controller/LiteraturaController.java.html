@@ -27,19 +27,19 @@ public class LiteraturaController {
     
     private final LiteraturaService service;
 
-<span class="nc" id="L30">  public LiteraturaController(LiteraturaService service) {</span>
-<span class="nc" id="L31">    this.service = service;</span>
-<span class="nc" id="L32">  }</span>
+<span class="fc" id="L30">  public LiteraturaController(LiteraturaService service) {</span>
+<span class="fc" id="L31">    this.service = service;</span>
+<span class="fc" id="L32">  }</span>
 
   @PostMapping
   public ResponseEntity&lt;Void&gt; create(@RequestBody CreatePredmetLiteraturaDto dto){
-<span class="nc" id="L36">    service.createForPredmet(dto);</span>
-<span class="nc" id="L37">    return ResponseEntity.status(HttpStatus.CREATED).build();</span>
+<span class="fc" id="L36">    service.createForPredmet(dto);</span>
+<span class="fc" id="L37">    return ResponseEntity.status(HttpStatus.CREATED).build();</span>
   }
 
   @ExceptionHandler({ValidationException.class, NotFoundException.class})
   public ResponseEntity&lt;String&gt; handle(RuntimeException e) {
-<span class="nc" id="L42">    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());</span>
+<span class="fc" id="L42">    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());</span>
   }
     
 }

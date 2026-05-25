@@ -20,13 +20,13 @@ public class PredmetController {
 
     private final PredmetService predmetService;
 
-<span class="nc" id="L23">    public PredmetController(PredmetService predmetService) {</span>
-<span class="nc" id="L24">        this.predmetService = predmetService;</span>
-<span class="nc" id="L25">    }</span>
+<span class="fc" id="L23">    public PredmetController(PredmetService predmetService) {</span>
+<span class="fc" id="L24">        this.predmetService = predmetService;</span>
+<span class="fc" id="L25">    }</span>
 
      @PostMapping
     public ResponseEntity&lt;PredmetDto&gt; save(@RequestBody PredmetDto dto) {
-<span class="nc" id="L29">        return new ResponseEntity&lt;&gt;(predmetService.save(dto), HttpStatus.CREATED);</span>
+<span class="fc" id="L29">        return new ResponseEntity&lt;&gt;(predmetService.save(dto), HttpStatus.CREATED);</span>
     }
 
 }

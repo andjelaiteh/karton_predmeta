@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
  */
 
 @ExtendWith(MockitoExtension.class)
-public class PredmetControllerTest {
+class PredmetControllerTest {
     @Mock
     private PredmetService predmetService;
 

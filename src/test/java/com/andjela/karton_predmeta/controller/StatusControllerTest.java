@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 
 @ExtendWith(MockitoExtension.class)
-public class StatusControllerTest {
+class StatusControllerTest {
     
     @Mock
     private StatusService createStatusService;

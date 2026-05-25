@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class TipLiteratureController {
     private final TipLiteratureRepository repository;
 
-<span class="nc" id="L23">    public TipLiteratureController(TipLiteratureRepository repository) {</span>
-<span class="nc" id="L24">        this.repository = repository;</span>
-<span class="nc" id="L25">    }</span>
+<span class="fc" id="L23">    public TipLiteratureController(TipLiteratureRepository repository) {</span>
+<span class="fc" id="L24">        this.repository = repository;</span>
+<span class="fc" id="L25">    }</span>
      
     @GetMapping
     public List&lt;TipLiterature&gt; getAll() {
-<span class="nc" id="L29">        return repository.findAll();</span>
+<span class="fc" id="L29">        return repository.findAll();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

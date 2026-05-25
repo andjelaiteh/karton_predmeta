@@ -26,19 +26,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class OcenjivanjeController {
      private final OcenjivanjeService service;
 
-<span class="nc" id="L29">    public OcenjivanjeController(OcenjivanjeService service) {</span>
-<span class="nc" id="L30">        this.service = service;</span>
-<span class="nc" id="L31">    }</span>
+<span class="fc" id="L29">    public OcenjivanjeController(OcenjivanjeService service) {</span>
+<span class="fc" id="L30">        this.service = service;</span>
+<span class="fc" id="L31">    }</span>
 
     @PostMapping
     public ResponseEntity&lt;Void&gt; create(@RequestBody CreateOcenjivanjeDto dto){
-<span class="nc" id="L35">        service.create(dto);</span>
-<span class="nc" id="L36">        return ResponseEntity.status(HttpStatus.CREATED).build();</span>
+<span class="fc" id="L35">        service.create(dto);</span>
+<span class="fc" id="L36">        return ResponseEntity.status(HttpStatus.CREATED).build();</span>
     }
 
     @ExceptionHandler({ValidationException.class, NotFoundException.class})
     public ResponseEntity&lt;String&gt; handle(RuntimeException e) {
-<span class="nc" id="L41">        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());</span>
+<span class="fc" id="L41">        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

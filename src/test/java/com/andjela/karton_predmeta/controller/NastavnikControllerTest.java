@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
  */
 
 @ExtendWith(MockitoExtension.class)
-public class NastavnikControllerTest {
+class NastavnikControllerTest {
     
     @Mock
     private NastavnikAngazovanjaService service;

@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 
 @ExtendWith(MockitoExtension.class)
-public class LiteraturaControllerTest {
+class LiteraturaControllerTest {
     
     @Mock
     private LiteraturaService service;

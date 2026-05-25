@@ -25,18 +25,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class NastavaController {
     private final NastavaService nastavaService;
 
-<span class="nc" id="L28">    public NastavaController(NastavaService nastavaService) {</span>
-<span class="nc" id="L29">        this.nastavaService = nastavaService;</span>
-<span class="nc" id="L30">    }</span>
+<span class="fc" id="L28">    public NastavaController(NastavaService nastavaService) {</span>
+<span class="fc" id="L29">        this.nastavaService = nastavaService;</span>
+<span class="fc" id="L30">    }</span>
       @PostMapping
     public ResponseEntity&lt;Void&gt; create(@RequestBody CreateNastavaDto dto){
-<span class="nc" id="L33">        nastavaService.create(dto);</span>
-<span class="nc" id="L34">        return ResponseEntity.status(HttpStatus.CREATED).build();</span>
+<span class="fc" id="L33">        nastavaService.create(dto);</span>
+<span class="fc" id="L34">        return ResponseEntity.status(HttpStatus.CREATED).build();</span>
     }
 
     @ExceptionHandler({ValidationException.class, NotFoundException.class})
     public ResponseEntity&lt;String&gt; handle(RuntimeException e) {
-<span class="nc" id="L39">        return new ResponseEntity&lt;&gt;(e.getMessage(), HttpStatus.BAD_REQUEST);</span>
+<span class="fc" id="L39">        return new ResponseEntity&lt;&gt;(e.getMessage(), HttpStatus.BAD_REQUEST);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
