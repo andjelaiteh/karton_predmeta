@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.ArgumentMatchers.any;
 
 /**
  *
@@ -48,7 +49,7 @@ class PredmetServiceImplTest {
         predmet.setNaziv("Automatizacija razvoja softvera");
         predmet.setEspb(6);
 
-        when(predmetRepository.save(org.mockito.ArgumentMatchers.any(Predmet.class)))
+        when(predmetRepository.save(any(Predmet.class)))
                 .thenReturn(predmet);
 
         PredmetDto rezultat = predmetService.save(dto);
@@ -56,7 +57,7 @@ class PredmetServiceImplTest {
         assertEquals("Automatizacija razvoja softvera", rezultat.getNaziv());
         assertEquals(6, rezultat.getEspb());
 
-        verify(predmetRepository).save(org.mockito.ArgumentMatchers.any(Predmet.class));
+        verify(predmetRepository).save(any(Predmet.class));
     }
 
     @Test

@@ -40,7 +40,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
  */
 
 @ExtendWith(MockitoExtension.class)
-public class LiteraturaServiceImplTest {
+class LiteraturaServiceImplTest {
      @Mock
     private PredmetRepository predmetRepo;
 
