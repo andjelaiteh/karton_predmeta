@@ -34,3 +34,5 @@ Frontend:
 JavaScript
 
 REST API integration using Fetch API
+
+GitHub Actions is used for continuous integration and automated testing.
