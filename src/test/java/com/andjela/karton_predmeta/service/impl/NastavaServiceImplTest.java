@@ -36,7 +36,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
  */
 
 @ExtendWith(MockitoExtension.class)
-public class NastavaServiceImplTest {
+class NastavaServiceImplTest {
     
     @Mock
     private NastavaRepository nastavaRepo;

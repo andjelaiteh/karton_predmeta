@@ -10,6 +10,7 @@ Controller Layer - Handles HTTP requests and exposes REST API endpoints. Receive
 Service Layer - Contains business logic and validation rules. Implements application-specific constraints and coordinates interaction between controllers and repositories.
 Repository Layer - Responsible for database communication using Spring Data JPA. Provides CRUD operations and query mechanisms for entity persistence.
 
+
 Database versioning and schema management are handled using Liquibase.
 
 ## Class Diagram
@@ -33,3 +34,5 @@ Frontend:
 JavaScript
 
 REST API integration using Fetch API
+
+GitHub Actions is used for continuous integration and automated testing.

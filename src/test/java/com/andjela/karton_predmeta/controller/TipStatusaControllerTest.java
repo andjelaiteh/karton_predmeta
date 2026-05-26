@@ -30,22 +30,19 @@ class TipStatusaControllerTest {
     private TipStatusaRepository repo;
 
     private TipStatusaController controller;
-
-@BeforeEach
-void setUp() {
-    TipStatusaDtoEntityMapper mapper = new TipStatusaDtoEntityMapper();
-    controller = new TipStatusaController(repo, mapper);
-}
+    
+    @BeforeEach
+    void setUp() {
+        TipStatusaDtoEntityMapper mapper = new TipStatusaDtoEntityMapper();
+        controller = new TipStatusaController(repo, mapper);
+    }
+    
     @Test
     void findAll_vracaListuTipovaStatusa() {
 
         TipStatusa tip = new TipStatusa();
         tip.setId(1L);
         tip.setNaziv("Obavezan");
-
-        TipStatusaDto dto = new TipStatusaDto();
-        dto.setId(1L);
-        dto.setNaziv("Obavezan");
 
         when(repo.findAll()).thenReturn(List.of(tip));
 
@@ -57,3 +54,5 @@ void setUp() {
         verify(repo).findAll();
     }
 }
+
+
