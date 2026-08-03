@@ -5,6 +5,7 @@
 package com.andjela.karton_predmeta.repository;
 
 import com.andjela.karton_predmeta.entity.Nastava;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,5 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Andjela
  */
 public interface NastavaRepository extends JpaRepository<Nastava, Long>{
-    
+    List<Nastava> findByPredmet_Id(Long predmetId);
 }

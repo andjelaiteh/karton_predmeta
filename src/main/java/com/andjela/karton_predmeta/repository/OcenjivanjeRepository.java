@@ -5,6 +5,7 @@
 package com.andjela.karton_predmeta.repository;
 
 import com.andjela.karton_predmeta.entity.Ocenjivanje;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,5 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Andjela
  */
 public interface OcenjivanjeRepository extends JpaRepository<Ocenjivanje, Long> {
-    
+    List<Ocenjivanje> findByPredmet_Id(Long predmetId);
 }

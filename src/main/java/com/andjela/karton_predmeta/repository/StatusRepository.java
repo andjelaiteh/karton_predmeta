@@ -12,5 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Andjela
  */
 public interface StatusRepository extends JpaRepository<Status, Long>{
-    
+    Status findByPredmet_Id(Long predmetId);
 }

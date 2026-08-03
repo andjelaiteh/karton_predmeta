@@ -68,6 +68,19 @@
             <scope>test</scope>
         </dependency>
         
+        <!-- Spring Security -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+        <!-- Unleash Spring Boot Starter -->
+<dependency>
+    <groupId>io.getunleash</groupId>
+    <artifactId>springboot-unleash-starter</artifactId>
+    <version>1.1.0</version>
+</dependency>
+        
     </dependencies>
     
     <build>

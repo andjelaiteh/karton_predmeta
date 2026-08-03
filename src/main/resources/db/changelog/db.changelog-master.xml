@@ -14,4 +14,6 @@
     <include file="db/changelog/06-create-ocenjivanje.xml"/>
     <include file="db/changelog/07-create-literatura-autor.xml"/>
     <include file="db/changelog/08-create-tip-literature.xml"/>
+    <include file="classpath:/db/changelog/09-create-korisnik-uloga.xml"/>
+    <include file="classpath:/db/changelog/10-fix-lozinke.xml"/>
 </databaseChangeLog>

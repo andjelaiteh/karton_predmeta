@@ -7,7 +7,12 @@ package com.andjela.karton_predmeta.service.impl;
 import com.andjela.karton_predmeta.dto.PredmetDto;
 import com.andjela.karton_predmeta.entity.Predmet;
 import com.andjela.karton_predmeta.mapper.impl.PredmetDtoEntityMapper;
+import com.andjela.karton_predmeta.repository.AngazovanjeRepository;
+import com.andjela.karton_predmeta.repository.NastavaRepository;
+import com.andjela.karton_predmeta.repository.OcenjivanjeRepository;
+import com.andjela.karton_predmeta.repository.PredmetLiteraturaRepository;
 import com.andjela.karton_predmeta.repository.PredmetRepository;
+import com.andjela.karton_predmeta.repository.StatusRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,15 +31,28 @@ import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class PredmetServiceImplTest {
-    @Mock
+        @Mock
     private PredmetRepository predmetRepository;
 
+    @Mock
+    private StatusRepository statusRepository;
+
     private PredmetServiceImpl predmetService;
+    
+    @Mock
+    private AngazovanjeRepository angazovanjeRepository;
+      
+    @Mock
+    private NastavaRepository nastavaRepository;
+    @Mock
+    private PredmetLiteraturaRepository predmetLiteraturaRepository;
+    @Mock
+    private OcenjivanjeRepository ocenjivanjeRepository;
     
     @BeforeEach
     void setUp() {
         PredmetDtoEntityMapper mapper = new PredmetDtoEntityMapper();
-        predmetService = new PredmetServiceImpl(predmetRepository, mapper);
+        predmetService = new PredmetServiceImpl(predmetRepository, mapper, statusRepository, angazovanjeRepository, nastavaRepository, predmetLiteraturaRepository, ocenjivanjeRepository);
     }
     
     @Test

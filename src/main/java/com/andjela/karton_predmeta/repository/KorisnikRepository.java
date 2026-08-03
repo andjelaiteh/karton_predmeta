@@ -4,14 +4,14 @@
  */
 package com.andjela.karton_predmeta.repository;
 
-import com.andjela.karton_predmeta.entity.PredmetLiteratura;
-import java.util.List;
+import com.andjela.karton_predmeta.entity.Korisnik;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Andjela
  */
-public interface PredmetLiteraturaRepository extends JpaRepository<PredmetLiteratura, Long>{
-    List<PredmetLiteratura> findByPredmet_Id(Long predmetId);
+public interface KorisnikRepository extends JpaRepository<Korisnik, Long>{
+     Optional<Korisnik> findByUsername(String username);
 }

@@ -4,7 +4,9 @@
  */
 package com.andjela.karton_predmeta.service;
 
+import com.andjela.karton_predmeta.dto.PredmetDetaljiDto;
 import com.andjela.karton_predmeta.dto.PredmetDto;
+import java.util.List;
 
 
 /**
@@ -14,4 +16,7 @@ import com.andjela.karton_predmeta.dto.PredmetDto;
 
 public interface PredmetService {
     PredmetDto save(PredmetDto predmetDto);
+    List<PredmetDto> findAll();
+    PredmetDto findById(Long id);
+    PredmetDetaljiDto findDetaljiById(Long id);
 }
