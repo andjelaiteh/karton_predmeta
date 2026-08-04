@@ -4,17 +4,14 @@
  */
 package com.andjela.karton_predmeta.repository;
 
-import com.andjela.karton_predmeta.entity.Nastava;
-import jakarta.transaction.Transactional;
-import java.util.List;
+import com.andjela.karton_predmeta.entity.Uloga;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Andjela
  */
-public interface NastavaRepository extends JpaRepository<Nastava, Long>{
-    List<Nastava> findByPredmet_Id(Long predmetId);
-    @Transactional
-    void deleteByPredmet_Id(Long predmetId);
+public interface UlogaRepository extends JpaRepository<Uloga, Long>  {
+    Optional<Uloga> findByNaziv(String naziv);
 }

@@ -19,4 +19,7 @@ public interface PredmetService {
     List<PredmetDto> findAll();
     PredmetDto findById(Long id);
     PredmetDetaljiDto findDetaljiById(Long id);
+    void obrisiDetaljePredmeta(Long id);
+    void obrisiPredmet(Long id);
+    void izmeniOsnovnePodatke(Long id, String naziv, Integer espb, Long programId, Long tipStatusaId);
 }

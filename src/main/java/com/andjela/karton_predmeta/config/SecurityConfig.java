@@ -42,18 +42,20 @@ public class SecurityConfig {
         return provider;
     }
 
-    @Bean
+@Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-    .requestMatchers("/login.html", "/login").permitAll()
-    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/predmet/**").permitAll()
-    .requestMatchers("/admin.html").hasRole("ADMIN")
-    .requestMatchers("/student.html").hasRole("STUDENT")
-    .anyRequest().authenticated()
-)
+            .requestMatchers("/login.html", "/login").permitAll()
+            .requestMatchers("/register.html", "/api/korisnik/register").permitAll()
+            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+            .requestMatchers("/api/feature/**").permitAll()
+            .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/predmet/**").permitAll()
+            .requestMatchers("/index.html", "/predmet.html", "/logo1.png", "/logo2.png").authenticated()
+            .requestMatchers("/admin.html").hasRole("ADMIN")
+            .anyRequest().authenticated()
+        )
         .formLogin(form -> form
             .loginPage("/login.html")
             .loginProcessingUrl("/login")
@@ -72,13 +74,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 @Bean
 public AuthenticationSuccessHandler successHandler() {
     return (request, response, authentication) -> {
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-        if (isAdmin) {
-            response.sendRedirect("/admin.html");
-        } else {
-            response.sendRedirect("/student.html");
-        }
+        response.sendRedirect("/index.html");
     };
 }
 }

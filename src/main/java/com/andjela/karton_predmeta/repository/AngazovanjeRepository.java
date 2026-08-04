@@ -5,6 +5,7 @@
 package com.andjela.karton_predmeta.repository;
 
 import com.andjela.karton_predmeta.entity.Angazovanje;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,4 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface AngazovanjeRepository extends JpaRepository<Angazovanje, Long> {
     List<Angazovanje> findByPredmet_Id(Long predmetId);
+    @Transactional
+    void deleteByPredmet_Id(Long predmetId);
 }

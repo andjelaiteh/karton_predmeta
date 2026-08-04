@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalji predmeta</title>
+    <style>
+        :root {
+          --pozadina: #f2f2f2;
+          --panel: #ffffff;
+          --tekst: #222222;
+          --tekst-meki: #555555;
+          --plava: #0047B3;
+          --svetlo-plava: #d6e4ff;
+          --crvena: #d63b3b;
+          --siva: #666;
+          --border: #e0e0e0;
+          --kartica-bg: #ffffff;
+          --senka: rgba(0,0,0,0.08);
+        }
+        body.dark {
+          --pozadina: #15171c;
+          --panel: #1e2128;
+          --tekst: #e8e8ea;
+          --tekst-meki: #9aa0aa;
+          --plava: #5a8dee;
+          --svetlo-plava: #2a3550;
+          --crvena: #e5686a;
+          --siva: #888;
+          --border: #333842;
+          --kartica-bg: #232730;
+          --senka: rgba(0,0,0,0.5);
+        }
+
+        * { box-sizing: border-box; }
+        body { margin:0; font-family:Arial, sans-serif; background:var(--pozadina); color:var(--tekst); transition: background 0.3s, color 0.3s; }
+        .header-container { width:100%; background:var(--panel); border-bottom:3px solid var(--plava); transition: background 0.3s; }
+        .topbar { display:flex; justify-content:space-between; align-items:center; padding:12px 24px; max-width:900px; margin:0 auto; }
+        .blue-section { background:var(--svetlo-plava); text-align:center; padding:16px; font-size:20px; font-weight:bold; letter-spacing:0.5px; color:var(--tekst); transition: background 0.3s; }
+        .content { padding:24px; max-width:900px; margin:0 auto; }
+        .btn { padding:10px 16px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; text-decoration:none; display:inline-block; }
+        .btn.back { background:var(--siva); color:white; }
+        .btn.primary { background:var(--plava); color:white; }
+        .btn.danger { background:var(--crvena); color:white; }
+        .btn:hover { opacity:0.92; }
+        .admin-akcije { display:flex; gap:10px; }
+        .card { background:var(--kartica-bg); border-radius:12px; box-shadow:0 1px 4px var(--senka); padding:24px; margin-top:20px; transition: background 0.3s; }
+        .card h2 { margin:0 0 6px; color:var(--plava); }
+        .meta { color:var(--tekst-meki); margin-bottom:20px; }
+        .sekcija { margin-top:24px; }
+        .sekcija h3 { border-bottom:2px solid var(--svetlo-plava); padding-bottom:6px; color:var(--tekst); }
+        table { width:100%; border-collapse:collapse; margin-top:8px; }
+        th, td { border:1px solid var(--border); padding:8px; text-align:left; color:var(--tekst); }
+        th { background:var(--svetlo-plava); }
+        .prazno { color:var(--tekst-meki); font-style:italic; padding:6px 0; }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <div class="topbar">
+            <a href="/index.html" class="btn back">← Nazad</a>
+            <div class="admin-akcije">
+                <a href="#" id="izmeniBtn" class="btn primary" style="display:none;">Izmeni</a>
+                <button id="obrisiBtn" class="btn danger" style="display:none;" onclick="obrisiPredmet()">Obriši</button>
+            </div>
+        </div>
+        <div class="blue-section">DETALJI PREDMETA</div>
+    </div>
+
+    <div class="content">
+        <div id="prikaz">
+            <div class="card">Učitavanje...</div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "/api";
+        const params = new URLSearchParams(window.location.search);
+        const predmetId = params.get("id");
+
+        window.onload = function () {
+            primeniTemu();
+            if (!predmetId) {
+                document.getElementById("prikaz").innerHTML =
+                    '<div class="card">Nije naveden predmet.</div>';
+                return;
+            }
+            proveriFlag();
+            ucitajDetalje();
+        };
+
+        function primeniTemu() {
+            fetch(API_BASE + "/feature/dark-mode")
+                .then(res => res.json())
+                .then(dark => { if (dark === true) document.body.classList.add("dark"); })
+                .catch(() => {});
+        }
+
+        function proveriFlag() {
+            fetch(API_BASE + "/feature/admin-access")
+                .then(res => res.json())
+                .then(jeAdmin => {
+                    if (jeAdmin === true) {
+                        const izmeni = document.getElementById("izmeniBtn");
+                        izmeni.style.display = "inline-block";
+                        izmeni.href = "/admin.html?id=" + predmetId;
+                        document.getElementById("obrisiBtn").style.display = "inline-block";
+                    }
+                })
+                .catch(() => {});
+        }
+
+        function ucitajDetalje() {
+            fetch(API_BASE + "/predmet/" + predmetId + "/detalji")
+                .then(res => { if (!res.ok) throw new Error(); return res.json(); })
+                .then(p => prikazi(p))
+                .catch(() => {
+                    document.getElementById("prikaz").innerHTML =
+                        '<div class="card">Greška pri učitavanju predmeta.</div>';
+                });
+        }
+
+        function obrisiPredmet() {
+            if (!confirm("Da li ste sigurni da želite da obrišete ovaj predmet? Ova akcija je trajna.")) {
+                return;
+            }
+            fetch(API_BASE + "/predmet/" + predmetId, { method: "DELETE" })
+                .then(res => {
+                    if (!res.ok) throw new Error();
+                    alert("Predmet je obrisan.");
+                    window.location.href = "/index.html";
+                })
+                .catch(() => alert("Greška pri brisanju predmeta."));
+        }
+
+        function prikazi(p) {
+            let html = `
+                <div class="card">
+                    <h2>${p.naziv ?? ""}</h2>
+                    <div class="meta">
+                        ESPB: ${p.espb ?? "-"} &nbsp;|&nbsp;
+                        Program: ${p.program ?? "-"} &nbsp;|&nbsp;
+                        Status: ${p.statusPredmeta ?? "-"}
+                    </div>`;
+
+            html += `<div class="sekcija"><h3>Nastavnici</h3>`;
+            if (p.nastavnici && p.nastavnici.length > 0) {
+                html += `<table><tr><th>Ime</th><th>Prezime</th><th>Zvanje</th></tr>`;
+                p.nastavnici.forEach(n => {
+                    html += `<tr><td>${n.ime ?? ""}</td><td>${n.prezime ?? ""}</td><td>${n.zvanje ?? ""}</td></tr>`;
+                });
+                html += `</table>`;
+            } else { html += `<div class="prazno">Nema nastavnika.</div>`; }
+            html += `</div>`;
+
+            html += `<div class="sekcija"><h3>Časovi nastave</h3>`;
+            if (p.casovi && p.casovi.length > 0) {
+                html += `<table><tr><th>Tip nastave</th><th>Broj časova</th></tr>`;
+                p.casovi.forEach(c => {
+                    html += `<tr><td>${c.tipNastave ?? ""}</td><td>${c.brojCasova ?? ""}</td></tr>`;
+                });
+                html += `</table>`;
+            } else { html += `<div class="prazno">Nema podataka o časovima.</div>`; }
+            html += `</div>`;
+
+            html += `<div class="sekcija"><h3>Literatura</h3>`;
+            if (p.literatura && p.literatura.length > 0) {
+                html += `<table><tr><th>Naslov</th><th>Godina</th><th>Izdavač</th><th>Tip</th></tr>`;
+                p.literatura.forEach(l => {
+                    html += `<tr><td>${l.naslov ?? ""}</td><td>${l.godina ?? ""}</td><td>${l.izdavac ?? ""}</td><td>${l.tipLiterature ?? ""}</td></tr>`;
+                });
+                html += `</table>`;
+            } else { html += `<div class="prazno">Nema literature.</div>`; }
+            html += `</div>`;
+
+            html += `<div class="sekcija"><h3>Ocenjivanje</h3>`;
+            if (p.ocene && p.ocene.length > 0) {
+                html += `<table><tr><th>Naziv obaveze</th><th>Poeni</th><th>Obavezna</th></tr>`;
+                p.ocene.forEach(o => {
+                    html += `<tr><td>${o.nazivObaveze ?? ""}</td><td>${o.poeni ?? ""}</td><td>${o.obavezna ? "Da" : "Ne"}</td></tr>`;
+                });
+                html += `</table>`;
+            } else { html += `<div class="prazno">Nema podataka o ocenjivanju.</div>`; }
+            html += `</div>`;
+
+            html += `</div>`;
+            document.getElementById("prikaz").innerHTML = html;
+        }
+    </script>
+</body>
+</html>

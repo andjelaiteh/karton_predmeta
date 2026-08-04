@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registracija — Karton predmeta</title>
+    <style>
+        body { margin:0; font-family:Arial, sans-serif; background:#f2f2f2; display:flex; justify-content:center; align-items:center; height:100vh; }
+        .box { background:#fff; padding:40px; border:2px solid #0047B3; border-radius:12px; width:340px; box-shadow:0 2px 12px rgba(0,0,0,0.1); }
+        .box h2 { text-align:center; margin:0 0 6px; color:#0047B3; }
+        .box .sub { text-align:center; font-size:13px; color:#666; margin-bottom:20px; }
+        .box input { width:100%; padding:11px; margin:8px 0; border:1px solid #ccc; border-radius:8px; box-sizing:border-box; font-size:14px; }
+        .box button { width:100%; padding:11px; background:#0047B3; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:16px; font-weight:bold; margin-top:8px; }
+        .box button:hover { background:#003a91; }
+        .poruka { text-align:center; margin-top:14px; font-size:14px; }
+        .poruka.greska { color:#d63b3b; }
+        .poruka.uspeh { color:#28a745; }
+        .link-login { text-align:center; margin-top:16px; font-size:13px; }
+        .link-login a { color:#0047B3; text-decoration:none; font-weight:bold; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Registracija</h2>
+        <div class="sub">Karton predmeta</div>
+
+        <input type="text" id="username" placeholder="Korisničko ime" autofocus>
+        <input type="password" id="password" placeholder="Lozinka">
+        <input type="password" id="password2" placeholder="Potvrdi lozinku">
+        <button onclick="registruj()">Registruj se</button>
+
+        <div id="poruka" class="poruka"></div>
+
+        <div class="link-login">
+            Već imaš nalog? <a href="/login.html">Prijavi se</a>
+        </div>
+    </div>
+
+    <script>
+        function registruj() {
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value;
+            const password2 = document.getElementById("password2").value;
+            const poruka = document.getElementById("poruka");
+
+            poruka.className = "poruka";
+            poruka.textContent = "";
+
+            if (!username) { prikaziGresku("Unesi korisničko ime."); return; }
+            if (!password) { prikaziGresku("Unesi lozinku."); return; }
+            if (password !== password2) { prikaziGresku("Lozinke se ne poklapaju."); return; }
+
+            fetch("/api/korisnik/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            })
+            .then(async res => {
+                if (res.ok) {
+                    poruka.className = "poruka uspeh";
+                    poruka.textContent = "Registracija uspešna! Preusmeravanje na prijavu...";
+                    setTimeout(() => { window.location.href = "/login.html"; }, 1500);
+                } else {
+                    const tekst = await res.text();
+                    prikaziGresku(tekst || "Greška pri registraciji.");
+                }
+            })
+            .catch(() => prikaziGresku("Greška pri povezivanju sa serverom."));
+        }
+
+        function prikaziGresku(tekst) {
+            const poruka = document.getElementById("poruka");
+            poruka.className = "poruka greska";
+            poruka.textContent = tekst;
+        }
+    </script>
+</body>
+</html>

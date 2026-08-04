@@ -11,5 +11,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @author Andjela
  */
 public interface KorisnikService extends UserDetailsService{
-    
+     void registruj(String username, String password);
 }

@@ -13,6 +13,8 @@ import com.andjela.karton_predmeta.repository.OcenjivanjeRepository;
 import com.andjela.karton_predmeta.repository.PredmetLiteraturaRepository;
 import com.andjela.karton_predmeta.repository.PredmetRepository;
 import com.andjela.karton_predmeta.repository.StatusRepository;
+import com.andjela.karton_predmeta.repository.StudijskiProgramRepository;
+import com.andjela.karton_predmeta.repository.TipStatusaRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,10 +51,14 @@ class PredmetServiceImplTest {
     @Mock
     private OcenjivanjeRepository ocenjivanjeRepository;
     
+    @Mock
+    private StudijskiProgramRepository studijskiProgramRepository;
+    @Mock
+    private TipStatusaRepository tipStatusaRepository;
     @BeforeEach
     void setUp() {
         PredmetDtoEntityMapper mapper = new PredmetDtoEntityMapper();
-        predmetService = new PredmetServiceImpl(predmetRepository, mapper, statusRepository, angazovanjeRepository, nastavaRepository, predmetLiteraturaRepository, ocenjivanjeRepository);
+        predmetService = new PredmetServiceImpl(predmetRepository, mapper, statusRepository, angazovanjeRepository, nastavaRepository, predmetLiteraturaRepository, ocenjivanjeRepository, studijskiProgramRepository, tipStatusaRepository);
     }
     
     @Test

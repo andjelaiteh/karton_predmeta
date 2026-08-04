@@ -5,6 +5,7 @@
 package com.andjela.karton_predmeta.repository;
 
 import com.andjela.karton_predmeta.entity.Status;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,4 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface StatusRepository extends JpaRepository<Status, Long>{
     Status findByPredmet_Id(Long predmetId);
+    @Transactional
+    void deleteByPredmet_Id(Long predmetId);
 }

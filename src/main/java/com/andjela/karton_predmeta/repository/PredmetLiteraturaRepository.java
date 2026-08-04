@@ -5,6 +5,7 @@
 package com.andjela.karton_predmeta.repository;
 
 import com.andjela.karton_predmeta.entity.PredmetLiteratura;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,4 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface PredmetLiteraturaRepository extends JpaRepository<PredmetLiteratura, Long>{
     List<PredmetLiteratura> findByPredmet_Id(Long predmetId);
+    @Transactional
+    void deleteByPredmet_Id(Long predmetId);
 }
