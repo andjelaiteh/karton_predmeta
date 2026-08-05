@@ -4,12 +4,18 @@
  */
 package com.andjela.karton_predmeta.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  *
  * @author Andjela
  */
-public interface KorisnikService extends UserDetailsService{
-     String registruj(String password, String ime, String prezime, String brojIndeksa, Long programId);
+
+public interface PrijavaPredmetaService {
+    Map<String, Object> podaciKorisnika();
+    List<Map<String, Object>> obavezniPredmeti();
+    List<Map<String, Object>> izborniPredmeti();
+    void sacuvajPrijavu(List<Long> izborniIds);
 }

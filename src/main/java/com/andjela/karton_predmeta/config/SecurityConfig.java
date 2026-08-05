@@ -48,7 +48,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/login.html", "/login").permitAll()
-            .requestMatchers("/register.html", "/api/korisnik/register").permitAll()
+            .requestMatchers("/register.html", "/api/korisnik/register", "/api/programi").permitAll()
             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
             .requestMatchers("/api/feature/**").permitAll()
             .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/predmet/**").permitAll()

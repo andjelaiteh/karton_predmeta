@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registracija — Karton predmeta</title>
     <style>
-        body { margin:0; font-family:Arial, sans-serif; background:#f2f2f2; display:flex; justify-content:center; align-items:center; height:100vh; }
-        .box { background:#fff; padding:40px; border:2px solid #0047B3; border-radius:12px; width:340px; box-shadow:0 2px 12px rgba(0,0,0,0.1); }
+        body { margin:0; font-family:Arial, sans-serif; background:#f2f2f2; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; box-sizing:border-box; }
+        .box { background:#fff; padding:36px; border:2px solid #0047B3; border-radius:12px; width:380px; box-shadow:0 2px 12px rgba(0,0,0,0.1); }
         .box h2 { text-align:center; margin:0 0 6px; color:#0047B3; }
         .box .sub { text-align:center; font-size:13px; color:#666; margin-bottom:20px; }
-        .box input { width:100%; padding:11px; margin:8px 0; border:1px solid #ccc; border-radius:8px; box-sizing:border-box; font-size:14px; }
+        .polje { margin-bottom:12px; }
+        .polje label { display:block; font-size:13px; font-weight:bold; color:#444; margin-bottom:4px; }
+        .box input, .box select { width:100%; padding:11px; border:1px solid #ccc; border-radius:8px; box-sizing:border-box; font-size:14px; }
         .box button { width:100%; padding:11px; background:#0047B3; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:16px; font-weight:bold; margin-top:8px; }
         .box button:hover { background:#003a91; }
         .poruka { text-align:center; margin-top:14px; font-size:14px; }
         .poruka.greska { color:#d63b3b; }
-        .poruka.uspeh { color:#28a745; }
+        .poruka.uspeh { color:#28a745; font-weight:bold; }
         .link-login { text-align:center; margin-top:16px; font-size:13px; }
         .link-login a { color:#0047B3; text-decoration:none; font-weight:bold; }
     </style>
@@ -24,9 +26,36 @@
         <h2>Registracija</h2>
         <div class="sub">Karton predmeta</div>
 
-        <input type="text" id="username" placeholder="Korisničko ime" autofocus>
-        <input type="password" id="password" placeholder="Lozinka">
-        <input type="password" id="password2" placeholder="Potvrdi lozinku">
+        <div class="polje">
+            <label for="ime">Ime</label>
+            <input type="text" id="ime" placeholder="Upiši ime" autofocus>
+        </div>
+
+        <div class="polje">
+            <label for="prezime">Prezime</label>
+            <input type="text" id="prezime" placeholder="Upiši prezime">
+        </div>
+
+        <div class="polje">
+            <label for="brojIndeksa">Broj indeksa</label>
+            <input type="text" id="brojIndeksa" placeholder="npr. 20253826">
+        </div>
+
+        <div class="polje">
+            <label for="programSelect">Smer (studijski program)</label>
+            <select id="programSelect"><option value="">Učitavanje smerova...</option></select>
+        </div>
+
+        <div class="polje">
+            <label for="password">Lozinka</label>
+            <input type="password" id="password" placeholder="Upiši lozinku">
+        </div>
+
+        <div class="polje">
+            <label for="password2">Potvrdi lozinku</label>
+            <input type="password" id="password2" placeholder="Ponovo upiši lozinku">
+        </div>
+
         <button onclick="registruj()">Registruj se</button>
 
         <div id="poruka" class="poruka"></div>
@@ -37,8 +66,37 @@
     </div>
 
     <script>
+        const API_BASE = "/api";
+
+        window.onload = function () {
+            ucitajSmerove();
+        };
+
+        function ucitajSmerove() {
+            fetch(API_BASE + "/programi")
+                .then(res => {
+                    if (!res.ok) throw new Error("status " + res.status);
+                    return res.json();
+                })
+                .then(data => {
+                    const select = document.getElementById("programSelect");
+                    select.innerHTML = '<option value="">-- Izaberi smer --</option>';
+                    data.forEach(p => {
+                        select.innerHTML += `<option value="${p.id}">${p.naziv}</option>`;
+                    });
+                })
+                .catch((e) => {
+                    console.error("Greška smerovi:", e);
+                    document.getElementById("programSelect").innerHTML =
+                        '<option value="">Greška pri učitavanju smerova</option>';
+                });
+        }
+
         function registruj() {
-            const username = document.getElementById("username").value.trim();
+            const ime = document.getElementById("ime").value.trim();
+            const prezime = document.getElementById("prezime").value.trim();
+            const brojIndeksa = document.getElementById("brojIndeksa").value.trim();
+            const programId = document.getElementById("programSelect").value;
             const password = document.getElementById("password").value;
             const password2 = document.getElementById("password2").value;
             const poruka = document.getElementById("poruka");
@@ -46,22 +104,25 @@
             poruka.className = "poruka";
             poruka.textContent = "";
 
-            if (!username) { prikaziGresku("Unesi korisničko ime."); return; }
+            if (!ime) { prikaziGresku("Unesi ime."); return; }
+            if (!prezime) { prikaziGresku("Unesi prezime."); return; }
+            if (!brojIndeksa) { prikaziGresku("Unesi broj indeksa."); return; }
+            if (!programId) { prikaziGresku("Izaberi smer."); return; }
             if (!password) { prikaziGresku("Unesi lozinku."); return; }
             if (password !== password2) { prikaziGresku("Lozinke se ne poklapaju."); return; }
 
             fetch("/api/korisnik/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ ime, prezime, brojIndeksa, programId, password })
             })
             .then(async res => {
+                const tekst = await res.text();
                 if (res.ok) {
                     poruka.className = "poruka uspeh";
-                    poruka.textContent = "Registracija uspešna! Preusmeravanje na prijavu...";
-                    setTimeout(() => { window.location.href = "/login.html"; }, 1500);
+                    poruka.innerHTML = "Registracija uspešna!<br>Vaše korisničko ime je: <b>" + tekst + "</b><br>Zapamtite ga za prijavu.<br>Preusmeravanje...";
+                    setTimeout(() => { window.location.href = "/login.html"; }, 4000);
                 } else {
-                    const tekst = await res.text();
                     prikaziGresku(tekst || "Greška pri registraciji.");
                 }
             })

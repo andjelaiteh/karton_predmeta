@@ -28,11 +28,21 @@ public class KorisnikController {
         this.korisnikService = korisnikService;
     }
     
-     @PostMapping("/register")
+    @PostMapping("/register")
     public ResponseEntity<String> registruj(@RequestBody Map<String, String> podaci) {
         try {
-            korisnikService.registruj(podaci.get("username"), podaci.get("password"));
-            return ResponseEntity.ok("Registracija uspešna.");
+            Long programId = null;
+            if (podaci.get("programId") != null && !podaci.get("programId").isEmpty()) {
+                programId = Long.valueOf(podaci.get("programId"));
+            }
+            String username = korisnikService.registruj(
+                podaci.get("password"),
+                podaci.get("ime"),
+                podaci.get("prezime"),
+                podaci.get("brojIndeksa"),
+                programId
+            );
+            return ResponseEntity.ok(username);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

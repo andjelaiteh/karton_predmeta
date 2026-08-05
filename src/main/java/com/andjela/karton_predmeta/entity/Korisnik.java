@@ -28,6 +28,19 @@ public class Korisnik {
     @JoinColumn(name = "uloga_id", nullable = false)
     private Uloga uloga;
 
+    @Column(name = "ime")
+    private String ime;
+
+    @Column(name = "prezime")
+    private String prezime;
+
+    @Column(name = "broj_indeksa")
+    private String brojIndeksa;
+
+    @ManyToOne
+    @JoinColumn(name = "program_id")
+    private StudijskiProgram program;
+
     public Long getId() {
         return id;
     }
@@ -59,4 +72,38 @@ public class Korisnik {
     public void setUloga(Uloga uloga) {
         this.uloga = uloga;
     }
+
+    public String getIme() {
+        return ime;
+    }
+
+    public void setIme(String ime) {
+        this.ime = ime;
+    }
+
+    public String getPrezime() {
+        return prezime;
+    }
+
+    public void setPrezime(String prezime) {
+        this.prezime = prezime;
+    }
+
+    public String getBrojIndeksa() {
+        return brojIndeksa;
+    }
+
+    public void setBrojIndeksa(String brojIndeksa) {
+        this.brojIndeksa = brojIndeksa;
+    }
+
+    public StudijskiProgram getProgram() {
+        return program;
+    }
+
+    public void setProgram(StudijskiProgram program) {
+        this.program = program;
+    }
+    
+    
 }

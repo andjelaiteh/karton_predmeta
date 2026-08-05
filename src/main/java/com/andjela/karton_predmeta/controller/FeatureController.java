@@ -61,4 +61,9 @@ public class FeatureController {
     public boolean searchCourses() {
         return unleash.isEnabled("search-courses");
     }
+    
+    @GetMapping("/prijava-otvorena")
+    public boolean prijavaOtvorena() {
+        return unleash.isEnabled("prijava-otvorena");
+    }
 }

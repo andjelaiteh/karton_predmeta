@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Prijava predmeta</title>
+    <style>
+        :root {
+          --pozadina: #f2f2f2; --panel: #ffffff; --tekst: #222222; --tekst-meki: #555555;
+          --plava: #0047B3; --svetlo-plava: #d6e4ff; --crvena: #d63b3b; --zelena: #28a745;
+          --siva: #666; --border: #e0e0e0; --kartica-bg: #ffffff; --senka: rgba(0,0,0,0.08);
+        }
+        body.dark {
+          --pozadina: #15171c; --panel: #1e2128; --tekst: #e8e8ea; --tekst-meki: #9aa0aa;
+          --plava: #5a8dee; --svetlo-plava: #2a3550; --crvena: #e5686a; --zelena: #3ba758;
+          --siva: #888; --border: #333842; --kartica-bg: #232730; --senka: rgba(0,0,0,0.5);
+        }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family:Arial, sans-serif; background:var(--pozadina); color:var(--tekst); transition: background 0.3s, color 0.3s; }
+        .header-container { width:100%; background:var(--panel); border-bottom:3px solid var(--plava); }
+        .topbar { display:flex; justify-content:space-between; align-items:center; padding:12px 24px; max-width:900px; margin:0 auto; }
+        .blue-section { background:var(--svetlo-plava); text-align:center; padding:16px; font-size:20px; font-weight:bold; color:var(--tekst); }
+        .content { padding:24px; max-width:900px; margin:0 auto; }
+        .btn { padding:10px 16px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; text-decoration:none; display:inline-block; }
+        .btn.back { background:var(--siva); color:white; }
+        .btn.zelena { background:var(--zelena); color:white; }
+        .btn:hover { opacity:0.92; }
+        .card { background:var(--kartica-bg); border-radius:12px; box-shadow:0 1px 4px var(--senka); padding:24px; margin-top:20px; }
+        .card h3 { margin:0 0 12px; color:var(--plava); border-bottom:2px solid var(--svetlo-plava); padding-bottom:6px; }
+        .info { color:var(--tekst-meki); margin-bottom:8px; }
+        table { width:100%; border-collapse:collapse; margin-top:8px; }
+        th, td { border:1px solid var(--border); padding:10px; text-align:left; color:var(--tekst); }
+        th { background:var(--svetlo-plava); }
+        select { width:100%; padding:9px; border:1px solid var(--border); border-radius:8px; background:var(--kartica-bg); color:var(--tekst); font-size:14px; margin-bottom:10px; }
+        .izborni-red { margin-bottom:6px; }
+        .izborni-red label { font-weight:bold; font-size:14px; display:block; margin-bottom:4px; }
+        .prazno { color:var(--tekst-meki); font-style:italic; }
+        .footer { display:flex; justify-content:flex-end; margin-top:20px; }
+        .poruka { margin-top:12px; font-size:14px; text-align:center; }
+        .poruka.greska { color:var(--crvena); }
+        .poruka.uspeh { color:var(--zelena); font-weight:bold; }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <div class="topbar">
+            <a href="/index.html" class="btn back">← Nazad</a>
+        </div>
+        <div class="blue-section">PRIJAVA PREDMETA</div>
+    </div>
+
+    <div class="content">
+        <div class="card">
+            <h3>Podaci studenta</h3>
+            <div id="podaciStudenta" class="info">Učitavanje...</div>
+        </div>
+
+        <div class="card">
+            <h3>Obavezni predmeti</h3>
+            <div id="obavezniLista"><div class="prazno">Učitavanje...</div></div>
+        </div>
+
+        <div class="card">
+            <h3>Izborni predmeti (izaberi 3)</h3>
+            <div id="izborniForma"><div class="prazno">Učitavanje...</div></div>
+        </div>
+
+        <div class="footer">
+            <button class="btn zelena" onclick="potvrdiPrijavu()">Potvrdi prijavu</button>
+        </div>
+        <div id="poruka" class="poruka"></div>
+    </div>
+
+    <script>
+        const API_BASE = "/api";
+        let izborniPredmeti = [];
+
+        window.onload = function () {
+            primeniTemu();
+            ucitajPodatke();
+            ucitajObavezne();
+            ucitajIzborne();
+        };
+
+        function primeniTemu() {
+            fetch(API_BASE + "/feature/dark-mode")
+                .then(res => res.json())
+                .then(dark => { if (dark === true) document.body.classList.add("dark"); })
+                .catch(() => {});
+        }
+
+        function ucitajPodatke() {
+            fetch(API_BASE + "/prijava-predmeta/podaci-korisnika")
+                .then(res => res.json())
+                .then(p => {
+                    document.getElementById("podaciStudenta").innerHTML =
+                        `<b>${p.ime ?? ""} ${p.prezime ?? ""}</b> &nbsp;|&nbsp; Indeks: ${p.brojIndeksa ?? "-"} &nbsp;|&nbsp; Smer: ${p.programNaziv ?? "-"}`;
+                })
+                .catch(() => {
+                    document.getElementById("podaciStudenta").textContent = "Greška pri učitavanju podataka.";
+                });
+        }
+
+        function ucitajObavezne() {
+            fetch(API_BASE + "/prijava-predmeta/obavezni")
+                .then(res => res.json())
+                .then(data => {
+                    const div = document.getElementById("obavezniLista");
+                    if (!data || data.length === 0) {
+                        div.innerHTML = '<div class="prazno">Nema obaveznih predmeta za tvoj smer.</div>';
+                        return;
+                    }
+                    let html = '<table><tr><th>Naziv</th><th style="width:100px;">ESPB</th></tr>';
+                    data.forEach(p => {
+                        html += `<tr><td>${p.naziv ?? ""}</td><td>${p.espb ?? "-"}</td></tr>`;
+                    });
+                    html += '</table>';
+                    div.innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById("obavezniLista").innerHTML = '<div class="prazno">Greška pri učitavanju obaveznih predmeta.</div>';
+                });
+        }
+
+        function ucitajIzborne() {
+            fetch(API_BASE + "/prijava-predmeta/izborni")
+                .then(res => res.json())
+                .then(data => {
+                    izborniPredmeti = data || [];
+                    const div = document.getElementById("izborniForma");
+                    if (izborniPredmeti.length === 0) {
+                        div.innerHTML = '<div class="prazno">Nema izbornih predmeta za tvoj smer.</div>';
+                        return;
+                    }
+                    // 3 padajuća menija
+                    let html = "";
+                    for (let i = 1; i <= 3; i++) {
+                        let opcije = '<option value="">-- Izaberi izborni predmet ' + i + ' --</option>';
+                        izborniPredmeti.forEach(p => {
+                            opcije += `<option value="${p.id}">${p.naziv} (ESPB: ${p.espb ?? "-"})</option>`;
+                        });
+                        html += `<div class="izborni-red">
+                                    <label>Izborni predmet ${i}</label>
+                                    <select id="izborni${i}" onchange="proveriDuplikate()">${opcije}</select>
+                                 </div>`;
+                    }
+                    div.innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById("izborniForma").innerHTML = '<div class="prazno">Greška pri učitavanju izbornih predmeta.</div>';
+                });
+        }
+
+        function proveriDuplikate() {
+            const izbori = [
+                document.getElementById("izborni1").value,
+                document.getElementById("izborni2").value,
+                document.getElementById("izborni3").value
+            ].filter(v => v !== "");
+            const jedinstveni = new Set(izbori);
+            const poruka = document.getElementById("poruka");
+            if (izbori.length !== jedinstveni.size) {
+                poruka.className = "poruka greska";
+                poruka.textContent = "Ne možeš izabrati isti izborni predmet dva puta.";
+            } else {
+                poruka.className = "poruka";
+                poruka.textContent = "";
+            }
+        }
+
+        function potvrdiPrijavu() {
+            const poruka = document.getElementById("poruka");
+            const izbori = [
+                document.getElementById("izborni1")?.value,
+                document.getElementById("izborni2")?.value,
+                document.getElementById("izborni3")?.value
+            ].filter(v => v && v !== "");
+
+            if (izborniPredmeti.length > 0) {
+                if (izbori.length !== 3) {
+                    poruka.className = "poruka greska";
+                    poruka.textContent = "Moraš izabrati tačno 3 izborna predmeta.";
+                    return;
+                }
+                const jedinstveni = new Set(izbori);
+                if (jedinstveni.size !== 3) {
+                    poruka.className = "poruka greska";
+                    poruka.textContent = "Izborni predmeti moraju biti različiti.";
+                    return;
+                }
+            }
+
+            // pošalji izbor backendu
+            fetch(API_BASE + "/prijava-predmeta/sacuvaj", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ izborniIds: izbori.map(Number) })
+            })
+            .then(async res => {
+                const tekst = await res.text();
+                if (res.ok) {
+                    poruka.className = "poruka uspeh";
+                    poruka.textContent = tekst;
+                } else {
+                    poruka.className = "poruka greska";
+                    poruka.textContent = tekst || "Greška pri čuvanju prijave.";
+                }
+            })
+            .catch(() => {
+                poruka.className = "poruka greska";
+                poruka.textContent = "Greška pri povezivanju sa serverom.";
+            });
+        }
+    </script>
+</body>
+</html>
