@@ -18,4 +18,7 @@ public interface PrijavaPredmetaService {
     List<Map<String, Object>> obavezniPredmeti();
     List<Map<String, Object>> izborniPredmeti();
     void sacuvajPrijavu(List<Long> izborniIds);
+    boolean postojiPrijava();
+    List<Long> mojiIzborni();
+    void izmeniPrijavu(List<Long> izborniIds);
 }

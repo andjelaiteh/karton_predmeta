@@ -5,6 +5,7 @@
 package com.andjela.karton_predmeta.repository;
 
 import com.andjela.karton_predmeta.entity.PrijavaPredmeta;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,4 +17,6 @@ public interface PrijavaPredmetaRepository extends JpaRepository<PrijavaPredmeta
     
     List<PrijavaPredmeta> findByKorisnik_Id(Long korisnikId);
     boolean existsByKorisnik_Id(Long korisnikId);
+    @Transactional
+    void deleteByKorisnik_Id(Long korisnikId);
 }

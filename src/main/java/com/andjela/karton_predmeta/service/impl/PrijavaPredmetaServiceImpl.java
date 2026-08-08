@@ -140,5 +140,70 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
         return korisnikRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Korisnik nije pronađen."));
     }
+
+    @Override
+    public boolean postojiPrijava() {
+        Korisnik k = trenutniKorisnik();
+        return prijavaPredmetaRepository.existsByKorisnik_Id(k.getId());
+    }
+
+    @Override
+    public List<Long> mojiIzborni() {
+        Korisnik k = trenutniKorisnik();
+        List<Long> izborniIds = new ArrayList<>();
+        if (k.getProgram() == null) return izborniIds;
+
+        // id-jevi svih izbornih predmeta smera (tip 2)
+        List<Status> izborniSmera = statusRepository.findByProgram_IdAndTipStatusa_Id(k.getProgram().getId(), 2L);
+        List<Long> izborniSmeraIds = new ArrayList<>();
+        for (Status s : izborniSmera) izborniSmeraIds.add(s.getPredmet().getId());
+
+        // od studentove prijave, uzmi samo one koji su izborni
+        List<PrijavaPredmeta> mojePrijave = prijavaPredmetaRepository.findByKorisnik_Id(k.getId());
+        for (PrijavaPredmeta pp : mojePrijave) {
+            Long predmetId = pp.getPredmet().getId();
+            if (izborniSmeraIds.contains(predmetId)) {
+                izborniIds.add(predmetId);
+            }
+        }
+        return izborniIds;
+    }
+
+    @Override
+    public void izmeniPrijavu(List<Long> izborniIds) {
+         if (!unleash.isEnabled("registration-open"))
+            throw new RuntimeException("Prijave predmeta su trenutno zatvorene.");
+
+        Korisnik k = trenutniKorisnik();
+        if (!prijavaPredmetaRepository.existsByKorisnik_Id(k.getId()))
+            throw new RuntimeException("Nemaš prijavu koju bi izmenio.");
+
+        // obriši staru prijavu pa sačuvaj novu
+        prijavaPredmetaRepository.deleteByKorisnik_Id(k.getId());
+        sacuvajInterno(k, izborniIds); }
+
+    private void sacuvajInterno(Korisnik k, List<Long> izborniIds) {
+         if (k.getProgram() == null)
+            throw new RuntimeException("Nemaš dodeljen smer, ne možeš prijaviti predmete.");
+        if (izborniIds == null || izborniIds.size() != 3)
+            throw new RuntimeException("Moraš izabrati tačno 3 izborna predmeta.");
+        if (izborniIds.stream().distinct().count() != 3)
+            throw new RuntimeException("Izborni predmeti moraju biti različiti.");
+
+        List<Long> sviIds = new ArrayList<>();
+        List<Status> obavezni = statusRepository.findByProgram_IdAndTipStatusa_Id(k.getProgram().getId(), 1L);
+        for (Status s : obavezni) sviIds.add(s.getPredmet().getId());
+        sviIds.addAll(izborniIds);
+
+        for (Long predmetId : sviIds) {
+            Predmet predmet = predmetRepository.findById(predmetId)
+                    .orElseThrow(() -> new RuntimeException("Predmet ne postoji: " + predmetId));
+            PrijavaPredmeta pp = new PrijavaPredmeta();
+            pp.setKorisnik(k);
+            pp.setPredmet(predmet);
+            pp.setDatumPrijave(LocalDateTime.now());
+            prijavaPredmetaRepository.save(pp);
+        }
+    }
     
 }

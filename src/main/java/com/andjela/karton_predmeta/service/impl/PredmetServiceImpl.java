@@ -55,8 +55,8 @@ public class PredmetServiceImpl implements PredmetService{
         this.ocenjivanjeRepository = ocenjivanjeRepository;
         this.studijskiProgramRepository = studijskiProgramRepository;
         this.tipStatusaRepository = tipStatusaRepository;
-    }   
-    
+    }
+
     @Override
     public PredmetDto save(PredmetDto predmetDto) {
          if (predmetDto.getNaziv() == null || predmetDto.getNaziv().trim().isEmpty()) {
@@ -187,5 +187,5 @@ public class PredmetServiceImpl implements PredmetService{
             statusRepository.save(status);
         }
         }
-    
+ 
 }
