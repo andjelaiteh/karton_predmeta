@@ -96,7 +96,6 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
     @Override
     @Transactional
     public void sacuvajPrijavu(List<Long> izborniIds) {
-        
         if (!unleash.isEnabled("registration-open"))
             throw new RuntimeException("Prijave predmeta su trenutno zatvorene.");
         
@@ -104,17 +103,14 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
 
         if (k.getProgram() == null)
             throw new RuntimeException("Nemaš dodeljen smer, ne možeš prijaviti predmete.");
-
         if (prijavaPredmetaRepository.existsByKorisnik_Id(k.getId()))
             throw new RuntimeException("Već si prijavio predmete.");
-
         if (izborniIds == null || izborniIds.size() != 3)
             throw new RuntimeException("Moraš izabrati tačno 3 izborna predmeta.");
         if (izborniIds.stream().distinct().count() != 3)
             throw new RuntimeException("Izborni predmeti moraju biti različiti.");
   
         List<Long> sviIds = new ArrayList<>();
-
         List<Status> obavezni = statusRepository.findByProgram_IdAndTipStatusa_Id(k.getProgram().getId(), 1L);
         for (Status s : obavezni) {
             sviIds.add(s.getPredmet().getId());
@@ -132,6 +128,22 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
             pp.setDatumPrijave(LocalDateTime.now());
             prijavaPredmetaRepository.save(pp);
         }
+    }
+    
+    @Override
+    public List<Map<String, Object>> sviStudenti() {
+        List<Korisnik> studenti = korisnikRepository.findByUloga_Naziv("STUDENT");
+        List<Map<String, Object>> rezultat = new ArrayList<>();
+        for (Korisnik s : studenti) {
+            Map<String, Object> m = new HashMap<>();
+            m.put("ime", s.getIme());
+            m.put("prezime", s.getPrezime());
+            m.put("brojIndeksa", s.getBrojIndeksa());
+            m.put("smer", s.getProgram() != null ? s.getProgram().getNaziv() : "-");
+            m.put("prijavio", prijavaPredmetaRepository.existsByKorisnik_Id(s.getId()));
+            rezultat.add(m);
+        }
+        return rezultat;
     }
 
     private Korisnik trenutniKorisnik() {

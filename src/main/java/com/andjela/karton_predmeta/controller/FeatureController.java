@@ -66,4 +66,14 @@ public class FeatureController {
     public boolean prijavaOtvorena() {
         return unleash.isEnabled("prijava-otvorena");
     }
+    
+    @GetMapping("/student-list")
+    public boolean studentList() {
+        return unleash.isEnabled("student-list");
+    }
+    
+    @GetMapping("/export-data")
+    public boolean exportData() {
+        return unleash.isEnabled("export-data");
+    }
 }

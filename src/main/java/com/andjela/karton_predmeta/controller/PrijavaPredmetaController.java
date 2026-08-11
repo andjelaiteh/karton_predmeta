@@ -55,4 +55,28 @@ public class PrijavaPredmetaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+    @GetMapping("/postoji")
+    public Map<String, Boolean> postoji() {
+        return Map.of("postoji", prijavaPredmetaService.postojiPrijava());
+    }
+
+    @GetMapping("/moji-izborni")
+    public List<Long> mojiIzborni() {
+        return prijavaPredmetaService.mojiIzborni();
+    }
+
+    @PostMapping("/izmeni")
+    public ResponseEntity<String> izmeni(@RequestBody Map<String, List<Long>> telo) {
+        try {
+            prijavaPredmetaService.izmeniPrijavu(telo.get("izborniIds"));
+            return ResponseEntity.ok("Prijava je uspešno izmenjena.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+    
+    @GetMapping("/studenti")
+    public List<Map<String, Object>> studenti() {
+        return prijavaPredmetaService.sviStudenti();
+    }
 }

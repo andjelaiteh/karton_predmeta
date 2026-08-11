@@ -67,7 +67,7 @@ public class KorisnikServiceImpl implements KorisnikService{
             if (!password.matches(".*[^a-zA-Z0-9].*"))
                 throw new RuntimeException("Lozinka mora sadržati bar jedan specijalni znak.");
         } else {
-            // pravila: bar 6 karaktera
+            // osnovno bar 6 karaktera
             if (password.length() < 6)
                 throw new RuntimeException("Lozinka mora imati bar 6 karaktera.");
         }

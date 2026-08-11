@@ -21,4 +21,5 @@ public interface PrijavaPredmetaService {
     boolean postojiPrijava();
     List<Long> mojiIzborni();
     void izmeniPrijavu(List<Long> izborniIds);
+    List<Map<String, Object>> sviStudenti();
 }

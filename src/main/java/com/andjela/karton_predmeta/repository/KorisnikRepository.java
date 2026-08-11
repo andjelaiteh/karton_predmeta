@@ -5,6 +5,7 @@
 package com.andjela.karton_predmeta.repository;
 
 import com.andjela.karton_predmeta.entity.Korisnik;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,4 +15,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface KorisnikRepository extends JpaRepository<Korisnik, Long>{
      Optional<Korisnik> findByUsername(String username);
+     List<Korisnik> findByUloga_Naziv(String naziv);
 }
