@@ -39,6 +39,7 @@ public class PrijavaPredmeta {
     private LocalDateTime datumPrijave;
 
     public PrijavaPredmeta() {
+        // prazan konstruktor neophodan za JPA
     }
 
     public Long getId() {

@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableWebSecurity
 public class SecurityConfig {
      private final KorisnikService korisnikService;
+     private static final String LOGIN_PAGE = "/login.html";
 
     public SecurityConfig(KorisnikService korisnikService) {
         this.korisnikService = korisnikService;
@@ -47,17 +48,16 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/login.html", "/login").permitAll()
+            .requestMatchers(LOGIN_PAGE, "/login").permitAll()
             .requestMatchers("/register.html", "/api/korisnik/register", "/api/programi").permitAll()
             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-            .requestMatchers("/api/feature/**").permitAll()
             .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/predmet/**").permitAll()
             .requestMatchers("/index.html", "/predmet.html", "/logo1.png", "/logo2.png").authenticated()
             .requestMatchers("/admin.html").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
-            .loginPage("/login.html")
+            .loginPage(LOGIN_PAGE)
             .loginProcessingUrl("/login")
             .successHandler(successHandler())
             .failureUrl("/login.html?error")
@@ -65,7 +65,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         )
         .logout(logout -> logout
             .logoutUrl("/logout")
-            .logoutSuccessUrl("/login.html")
+            .logoutSuccessUrl(LOGIN_PAGE)
             .permitAll()
         );
     return http.build();
@@ -73,8 +73,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 @Bean
 public AuthenticationSuccessHandler successHandler() {
-    return (request, response, authentication) -> {
+    return (request, response, authentication) -> 
         response.sendRedirect("/index.html");
-    };
 }
 }

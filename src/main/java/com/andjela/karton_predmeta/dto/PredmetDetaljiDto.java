@@ -93,23 +93,7 @@ public class PredmetDetaljiDto {
         this.ocene = ocene;
     }
 
-    
-    
     public PredmetDetaljiDto() {
-    }
-
-    public PredmetDetaljiDto(Long id, String naziv, Integer espb, String program, String statusPredmeta, List<NastavnikDto> nastavnici, List<CasDto> casovi, List<LiteraturaDto> literatura, List<OcenjivanjeStavkaDto> ocene) {
-        this.id = id;
-        this.naziv = naziv;
-        this.espb = espb;
-        this.program = program;
-        this.statusPredmeta = statusPredmeta;
-        this.nastavnici = nastavnici;
-        this.casovi = casovi;
-        this.literatura = literatura;
-        this.ocene = ocene;
-    }
-    
-    
-
+        //prazan
+    }  
 }

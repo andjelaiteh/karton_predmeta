@@ -10,25 +10,19 @@
           --plava: #0047B3; --svetlo-plava: #d6e4ff; --crvena: #d63b3b;
           --border: #dddddd; --kartica-bg: #ffffff; --senka: rgba(0,0,0,0.12);
         }
-        body.dark {
-          --pozadina: #15171c; --panel: #1e2128; --tekst: #e8e8ea; --tekst-meki: #9aa0aa;
-          --plava: #5a8dee; --svetlo-plava: #2a3550; --crvena: #e5686a;
-          --border: #333842; --kartica-bg: #232730; --senka: rgba(0,0,0,0.5);
-        }
-        body { margin:0; font-family:Arial, sans-serif; background:var(--pozadina); color:var(--tekst); transition: background 0.3s, color 0.3s; }
-        .header-container { width:100%; background:var(--panel); border-bottom:3px solid var(--plava); transition: background 0.3s; }
+        body { margin:0; font-family:Arial, sans-serif; background:var(--pozadina); color:var(--tekst); }
+        .header-container { width:100%; background:var(--panel); border-bottom:3px solid var(--plava); }
         .top-row { display:flex; align-items:center; justify-content:space-between; padding:14px 24px; max-width:1000px; margin:0 auto; }
         .logo { width:74px; }
         .university-info { text-align:center; font-size:13px; font-weight:bold; line-height:1.5; color:var(--tekst); }
-        .blue-section { background:var(--svetlo-plava); text-align:center; padding:16px; font-size:20px; font-weight:bold; letter-spacing:0.5px; color:var(--tekst); transition: background 0.3s; }
+        .blue-section { background:var(--svetlo-plava); text-align:center; padding:16px; font-size:20px; font-weight:bold; letter-spacing:0.5px; color:var(--tekst); }
         .toolbar-top { max-width:1000px; margin:0 auto; padding:12px 24px 0; display:flex; justify-content:flex-end; }
         .content { padding:20px 30px 30px; max-width:1000px; margin:0 auto; }
-        .toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:20px; }
-        #pretraga { flex:1; padding:10px; border:1px solid var(--border); border-radius:8px; font-size:15px; background:var(--kartica-bg); color:var(--tekst); }
+        .toolbar { display:flex; justify-content:flex-end; align-items:center; gap:12px; margin-bottom:20px; }
         .btn { padding:10px 16px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; text-decoration:none; display:inline-block; font-size:14px; }
         .btn.primary { background:var(--plava); color:white; }
         .btn.logout { background:var(--crvena); color:white; }
-        .predmet-card { background:var(--kartica-bg); border:1px solid var(--border); border-radius:8px; padding:16px; margin-bottom:12px; cursor:pointer; transition:box-shadow .15s, background 0.3s, border 0.3s; }
+        .predmet-card { background:var(--kartica-bg); border:1px solid var(--border); border-radius:8px; padding:16px; margin-bottom:12px; cursor:pointer; transition:box-shadow .15s; }
         .predmet-card:hover { box-shadow:0 2px 8px var(--senka); }
         .predmet-card h3 { margin:0 0 6px; color:var(--plava); }
         .predmet-card .espb { color:var(--tekst-meki); font-size:14px; }
@@ -54,9 +48,8 @@
 
     <div class="content">
         <div class="toolbar">
-            <input type="text" id="pretraga" placeholder="Pretraži predmete po nazivu..." oninput="filtriraj()">
-            <a href="/admin.html" id="dodajBtn" class="btn primary" style="display:none;">+ Dodaj predmet</a>
-            <a href="/prijava.html" id="prijavaBtn" class="btn primary" style="display:none;">Prijava predmeta</a>
+            <a href="/admin.html" id="dodajBtn" class="btn primary">+ Dodaj predmet</a>
+            <a href="/prijava.html" id="prijavaBtn" class="btn primary">Prijava predmeta</a>
         </div>
 
         <div id="lista">
@@ -69,27 +62,8 @@
         let sviPredmeti = [];
 
         window.onload = function () {
-            primeniTemu();
-            proveriPretragu();
-            proveriFlag();
             ucitajPredmete();
         };
-
-        function primeniTemu() {
-            fetch(API_BASE + "/feature/dark-mode")
-                .then(res => res.json())
-                .then(dark => { if (dark === true) document.body.classList.add("dark"); })
-                .catch(() => {});
-        }
-
-        function proveriFlag() {
-            fetch(API_BASE + "/feature/admin-access")
-                .then(res => res.json())
-                .then(jeAdmin => { if (jeAdmin === true)
-                {document.getElementById("dodajBtn").style.display = "inline-block";}
-                else { document.getElementById("prijavaBtn").style.display = "inline-block";}})
-                .catch(() => {});
-        }
 
         function ucitajPredmete() {
             fetch(API_BASE + "/predmet")
@@ -105,23 +79,6 @@
             predmeti.forEach(p => {
                 lista.innerHTML += `<div class="predmet-card" onclick="window.location.href='/predmet.html?id=${p.id}'"><h3>${p.naziv ?? ""}</h3><div class="espb">ESPB: ${p.espb ?? "-"}</div></div>`;
             });
-        }
-
-        function filtriraj() {
-            const tekst = document.getElementById("pretraga").value.toLowerCase();
-            const filtrirani = sviPredmeti.filter(p => (p.naziv ?? "").toLowerCase().includes(tekst));
-            prikazi(filtrirani);
-        }
-        
-        function proveriPretragu() {
-            fetch(API_BASE + "/feature/search-courses")
-                .then(res => res.json())
-                .then(aktivna => {
-                    if (aktivna !== true) {
-                        document.getElementById("pretraga").style.display = "none";
-                    }
-                })
-                .catch(() => {});
         }
     </script>
 </body>

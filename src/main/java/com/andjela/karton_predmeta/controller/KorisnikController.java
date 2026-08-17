@@ -28,12 +28,14 @@ public class KorisnikController {
         this.korisnikService = korisnikService;
     }
     
+    private static final String PROGRAM_ID = "programId";
+    
     @PostMapping("/register")
     public ResponseEntity<String> registruj(@RequestBody Map<String, String> podaci) {
         try {
-            Long programId = null;
-            if (podaci.get("programId") != null && !podaci.get("programId").isEmpty()) {
-                programId = Long.valueOf(podaci.get("programId"));
+                Long programId = null;
+                if (podaci.get(PROGRAM_ID) != null && !podaci.get(PROGRAM_ID).isEmpty()) {
+                programId = Long.valueOf(podaci.get(PROGRAM_ID));
             }
             String username = korisnikService.registruj(
                 podaci.get("password"),

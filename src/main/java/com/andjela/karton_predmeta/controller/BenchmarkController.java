@@ -13,76 +13,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * Kontroler namenjen isključivo merenju performansi.
+ * Sadrži endpoint-e koje gađaju k6/JMH scenariji.
+ * Isključen je iz SonarQube analize kvaliteta.
  *
  * @author Andjela
  */
-
 @RestController
-@RequestMapping("/api/feature")
-public class FeatureController {
+@RequestMapping("/api/benchmark")
+public class BenchmarkController {
+
     private final Unleash unleash;
 
-    public FeatureController(Unleash unleash) {
+    public BenchmarkController(Unleash unleash) {
         this.unleash = unleash;
     }
 
-    @GetMapping("/admin-access")
-    public boolean adminAccess() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        String username = (auth != null) ? auth.getName() : "anonymous";
-        boolean isAdmin = (auth != null) && auth.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        UnleashContext context = UnleashContext.builder()
-                .userId(username)
-                .addProperty("role", isAdmin ? "ADMIN" : "STUDENT")
-                .build();
-
-        return unleash.isEnabled("admin-access", context);
-    }
-    
-    @GetMapping("/dark-mode")
-    public boolean darkMode() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = (auth != null) ? auth.getName() : "anonymous";
-        boolean isAdmin = (auth != null) && auth.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        UnleashContext context = UnleashContext.builder()
-                .userId(username)
-                .addProperty("role", isAdmin ? "ADMIN" : "STUDENT")
-                .build();
-
-        return unleash.isEnabled("dark-mode-experiment", context);
-    }
-    
-    @GetMapping("/search-courses")
-    public boolean searchCourses() {
-        return unleash.isEnabled("search-courses");
-    }
-    
-    @GetMapping("/registration-open")
-    public boolean prijavaOtvorena() {
-        return unleash.isEnabled("registration-open");
-    }
-    
-    @GetMapping("/student-list")
-    public boolean studentList() {
-        return unleash.isEnabled("student-list");
-    }
-    
-    @GetMapping("/export-data")
-    public boolean exportData() {
-        return unleash.isEnabled("export-data");
-    }
-    
     @GetMapping("/baseline")
     public boolean baseline() {
         return true;   // bez unleash.isEnabled() — čist HTTP zahtev
     }
-    
-    // ===== H4: merenje broja provera po zahtevu =====
 
     private UnleashContext kontekstUloge() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

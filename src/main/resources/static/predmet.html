@@ -18,25 +18,12 @@
           --kartica-bg: #ffffff;
           --senka: rgba(0,0,0,0.08);
         }
-        body.dark {
-          --pozadina: #15171c;
-          --panel: #1e2128;
-          --tekst: #e8e8ea;
-          --tekst-meki: #9aa0aa;
-          --plava: #5a8dee;
-          --svetlo-plava: #2a3550;
-          --crvena: #e5686a;
-          --siva: #888;
-          --border: #333842;
-          --kartica-bg: #232730;
-          --senka: rgba(0,0,0,0.5);
-        }
 
         * { box-sizing: border-box; }
-        body { margin:0; font-family:Arial, sans-serif; background:var(--pozadina); color:var(--tekst); transition: background 0.3s, color 0.3s; }
-        .header-container { width:100%; background:var(--panel); border-bottom:3px solid var(--plava); transition: background 0.3s; }
+        body { margin:0; font-family:Arial, sans-serif; background:var(--pozadina); color:var(--tekst); }
+        .header-container { width:100%; background:var(--panel); border-bottom:3px solid var(--plava); }
         .topbar { display:flex; justify-content:space-between; align-items:center; padding:12px 24px; max-width:900px; margin:0 auto; }
-        .blue-section { background:var(--svetlo-plava); text-align:center; padding:16px; font-size:20px; font-weight:bold; letter-spacing:0.5px; color:var(--tekst); transition: background 0.3s; }
+        .blue-section { background:var(--svetlo-plava); text-align:center; padding:16px; font-size:20px; font-weight:bold; letter-spacing:0.5px; color:var(--tekst); }
         .content { padding:24px; max-width:900px; margin:0 auto; }
         .btn { padding:10px 16px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; text-decoration:none; display:inline-block; }
         .btn.back { background:var(--siva); color:white; }
@@ -44,7 +31,7 @@
         .btn.danger { background:var(--crvena); color:white; }
         .btn:hover { opacity:0.92; }
         .admin-akcije { display:flex; gap:10px; }
-        .card { background:var(--kartica-bg); border-radius:12px; box-shadow:0 1px 4px var(--senka); padding:24px; margin-top:20px; transition: background 0.3s; }
+        .card { background:var(--kartica-bg); border-radius:12px; box-shadow:0 1px 4px var(--senka); padding:24px; margin-top:20px; }
         .card h2 { margin:0 0 6px; color:var(--plava); }
         .meta { color:var(--tekst-meki); margin-bottom:20px; }
         .sekcija { margin-top:24px; }
@@ -60,8 +47,8 @@
         <div class="topbar">
             <a href="/index.html" class="btn back">← Nazad</a>
             <div class="admin-akcije">
-                <a href="#" id="izmeniBtn" class="btn primary" style="display:none;">Izmeni</a>
-                <button id="obrisiBtn" class="btn danger" style="display:none;" onclick="obrisiPredmet()">Obriši</button>
+                <a href="#" id="izmeniBtn" class="btn primary">Izmeni</a>
+                <button id="obrisiBtn" class="btn danger" onclick="obrisiPredmet()">Obriši</button>
             </div>
         </div>
         <div class="blue-section">DETALJI PREDMETA</div>
@@ -79,36 +66,13 @@
         const predmetId = params.get("id");
 
         window.onload = function () {
-            primeniTemu();
             if (!predmetId) {
                 document.getElementById("prikaz").innerHTML =
                     '<div class="card">Nije naveden predmet.</div>';
                 return;
             }
-            proveriFlag();
             ucitajDetalje();
         };
-
-        function primeniTemu() {
-            fetch(API_BASE + "/feature/dark-mode")
-                .then(res => res.json())
-                .then(dark => { if (dark === true) document.body.classList.add("dark"); })
-                .catch(() => {});
-        }
-
-        function proveriFlag() {
-            fetch(API_BASE + "/feature/admin-access")
-                .then(res => res.json())
-                .then(jeAdmin => {
-                    if (jeAdmin === true) {
-                        const izmeni = document.getElementById("izmeniBtn");
-                        izmeni.style.display = "inline-block";
-                        izmeni.href = "/admin.html?id=" + predmetId;
-                        document.getElementById("obrisiBtn").style.display = "inline-block";
-                    }
-                })
-                .catch(() => {});
-        }
 
         function ucitajDetalje() {
             fetch(API_BASE + "/predmet/" + predmetId + "/detalji")

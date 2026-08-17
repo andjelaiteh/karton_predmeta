@@ -13,14 +13,15 @@ import com.andjela.karton_predmeta.repository.PredmetRepository;
 import com.andjela.karton_predmeta.repository.PrijavaPredmetaRepository;
 import com.andjela.karton_predmeta.repository.StatusRepository;
 import com.andjela.karton_predmeta.service.PrijavaPredmetaService;
-import io.getunleash.Unleash;
+import exception.NotFoundException;
+import exception.ValidationException;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
-    
-    @Autowired
-    Unleash unleash;
+  
 
     private final KorisnikRepository korisnikRepository;
     private final StatusRepository statusRepository;
@@ -96,19 +95,17 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
     @Override
     @Transactional
     public void sacuvajPrijavu(List<Long> izborniIds) {
-        if (!unleash.isEnabled("registration-open"))
-            throw new RuntimeException("Prijave predmeta su trenutno zatvorene.");
         
         Korisnik k = trenutniKorisnik();
 
         if (k.getProgram() == null)
-            throw new RuntimeException("Nemaš dodeljen smer, ne možeš prijaviti predmete.");
+            throw new ValidationException("Nemaš dodeljen smer, ne možeš prijaviti predmete.");
         if (prijavaPredmetaRepository.existsByKorisnik_Id(k.getId()))
-            throw new RuntimeException("Već si prijavio predmete.");
+            throw new ValidationException("Već si prijavio predmete.");
         if (izborniIds == null || izborniIds.size() != 3)
-            throw new RuntimeException("Moraš izabrati tačno 3 izborna predmeta.");
+            throw new ValidationException("Moraš izabrati tačno 3 izborna predmeta.");
         if (izborniIds.stream().distinct().count() != 3)
-            throw new RuntimeException("Izborni predmeti moraju biti različiti.");
+            throw new ValidationException("Izborni predmeti moraju biti različiti.");
   
         List<Long> sviIds = new ArrayList<>();
         List<Status> obavezni = statusRepository.findByProgram_IdAndTipStatusa_Id(k.getProgram().getId(), 1L);
@@ -120,12 +117,12 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
 
         for (Long predmetId : sviIds) {
             Predmet predmet = predmetRepository.findById(predmetId)
-                    .orElseThrow(() -> new RuntimeException("Predmet ne postoji: " + predmetId));
+                    .orElseThrow(() -> new NotFoundException("Predmet ne postoji: " + predmetId));
 
             PrijavaPredmeta pp = new PrijavaPredmeta();
             pp.setKorisnik(k);
             pp.setPredmet(predmet);
-            pp.setDatumPrijave(LocalDateTime.now());
+            pp.setDatumPrijave(LocalDateTime.now(ZoneId.systemDefault()));
             prijavaPredmetaRepository.save(pp);
         }
     }
@@ -150,7 +147,7 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         return korisnikRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Korisnik nije pronađen."));
+                .orElseThrow(() -> new NotFoundException("Korisnik nije pronađen."));
     }
 
     @Override
@@ -183,12 +180,10 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
 
     @Override
     public void izmeniPrijavu(List<Long> izborniIds) {
-         if (!unleash.isEnabled("registration-open"))
-            throw new RuntimeException("Prijave predmeta su trenutno zatvorene.");
 
         Korisnik k = trenutniKorisnik();
         if (!prijavaPredmetaRepository.existsByKorisnik_Id(k.getId()))
-            throw new RuntimeException("Nemaš prijavu koju bi izmenio.");
+            throw new ValidationException("Nemaš prijavu koju bi izmenio.");
 
         // obriši staru prijavu pa sačuvaj novu
         prijavaPredmetaRepository.deleteByKorisnik_Id(k.getId());
@@ -196,11 +191,11 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
 
     private void sacuvajInterno(Korisnik k, List<Long> izborniIds) {
          if (k.getProgram() == null)
-            throw new RuntimeException("Nemaš dodeljen smer, ne možeš prijaviti predmete.");
+            throw new ValidationException("Nemaš dodeljen smer, ne možeš prijaviti predmete.");
         if (izborniIds == null || izborniIds.size() != 3)
-            throw new RuntimeException("Moraš izabrati tačno 3 izborna predmeta.");
+            throw new ValidationException("Moraš izabrati tačno 3 izborna predmeta.");
         if (izborniIds.stream().distinct().count() != 3)
-            throw new RuntimeException("Izborni predmeti moraju biti različiti.");
+            throw new ValidationException("Izborni predmeti moraju biti različiti.");
 
         List<Long> sviIds = new ArrayList<>();
         List<Status> obavezni = statusRepository.findByProgram_IdAndTipStatusa_Id(k.getProgram().getId(), 1L);
@@ -209,11 +204,11 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
 
         for (Long predmetId : sviIds) {
             Predmet predmet = predmetRepository.findById(predmetId)
-                    .orElseThrow(() -> new RuntimeException("Predmet ne postoji: " + predmetId));
+                    .orElseThrow(() -> new NotFoundException("Predmet ne postoji: " + predmetId));
             PrijavaPredmeta pp = new PrijavaPredmeta();
             pp.setKorisnik(k);
             pp.setPredmet(predmet);
-            pp.setDatumPrijave(LocalDateTime.now());
+            pp.setDatumPrijave(LocalDateTime.now(ZoneId.systemDefault()));
             prijavaPredmetaRepository.save(pp);
         }
     }
