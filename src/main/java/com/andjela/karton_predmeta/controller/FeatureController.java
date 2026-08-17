@@ -62,9 +62,9 @@ public class FeatureController {
         return unleash.isEnabled("search-courses");
     }
     
-    @GetMapping("/prijava-otvorena")
+    @GetMapping("/registration-open")
     public boolean prijavaOtvorena() {
-        return unleash.isEnabled("prijava-otvorena");
+        return unleash.isEnabled("registration-open");
     }
     
     @GetMapping("/student-list")
@@ -75,5 +75,59 @@ public class FeatureController {
     @GetMapping("/export-data")
     public boolean exportData() {
         return unleash.isEnabled("export-data");
+    }
+    
+    @GetMapping("/baseline")
+    public boolean baseline() {
+        return true;   // bez unleash.isEnabled() — čist HTTP zahtev
+    }
+    
+    // ===== H4: merenje broja provera po zahtevu =====
+
+    private UnleashContext kontekstUloge() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = (auth != null) ? auth.getName() : "anonymous";
+        boolean isAdmin = (auth != null) && auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        return UnleashContext.builder()
+                .userId(username)
+                .addProperty("role", isAdmin ? "ADMIN" : "STUDENT")
+                .build();
+    }
+
+    @GetMapping("/multi3")
+    public boolean multi3() {
+        UnleashContext ctx = kontekstUloge();
+        boolean r = false;
+        r ^= unleash.isEnabled("strong-password");
+        r ^= unleash.isEnabled("admin-access", ctx);
+        r ^= unleash.isEnabled("search-courses");
+        return r;
+    }
+
+    @GetMapping("/multi5")
+    public boolean multi5() {
+        UnleashContext ctx = kontekstUloge();
+        boolean r = false;
+        r ^= unleash.isEnabled("strong-password");
+        r ^= unleash.isEnabled("admin-access", ctx);
+        r ^= unleash.isEnabled("search-courses");
+        r ^= unleash.isEnabled("registration-open");
+        r ^= unleash.isEnabled("student-list");
+        return r;
+    }
+
+    @GetMapping("/multi7")
+    public boolean multi7() {
+        UnleashContext ctx = kontekstUloge();
+        boolean r = false;
+        r ^= unleash.isEnabled("strong-password");
+        r ^= unleash.isEnabled("admin-access", ctx);
+        r ^= unleash.isEnabled("search-courses");
+        r ^= unleash.isEnabled("registration-open");
+        r ^= unleash.isEnabled("student-list");
+        r ^= unleash.isEnabled("dark-mode-experiment", ctx);
+        r ^= unleash.isEnabled("export-data");
+        return r;
     }
 }

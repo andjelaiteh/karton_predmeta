@@ -80,7 +80,20 @@
     <artifactId>springboot-unleash-starter</artifactId>
     <version>1.1.0</version>
 </dependency>
-        
+        <!-- JMH benchmark -->
+        <dependency>
+    <groupId>org.openjdk.jmh</groupId>
+    <artifactId>jmh-core</artifactId>
+    <version>1.37</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.openjdk.jmh</groupId>
+    <artifactId>jmh-generator-annprocess</artifactId>
+    <version>1.37</version>
+    <scope>test</scope>
+</dependency>
+
     </dependencies>
     
     <build>
@@ -90,6 +103,20 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             
+            <!-- Тера JMH annotation processor да генерише BenchmarkList при компилацији тестова -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+        <annotationProcessorPaths>
+            <path>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-generator-annprocess</artifactId>
+                <version>1.37</version>
+            </path>
+        </annotationProcessorPaths>
+    </configuration>
+</plugin>
             <plugin>
     <groupId>org.jacoco</groupId>
     <artifactId>jacoco-maven-plugin</artifactId>
