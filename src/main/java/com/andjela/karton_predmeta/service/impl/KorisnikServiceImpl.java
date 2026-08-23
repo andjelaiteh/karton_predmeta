@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import io.getunleash.Unleash;
 
 /**
  *
@@ -32,12 +33,16 @@ public class KorisnikServiceImpl implements KorisnikService {
     private final UlogaRepository ulogaRepository;
     private final StudijskiProgramRepository studijskiProgramRepository;
 
+    private final Unleash unleash;
+
     public KorisnikServiceImpl(KorisnikRepository korisnikRepository,
                                UlogaRepository ulogaRepository,
-                               StudijskiProgramRepository studijskiProgramRepository) {
+                               StudijskiProgramRepository studijskiProgramRepository,
+                               Unleash unleash) {
         this.korisnikRepository = korisnikRepository;
         this.ulogaRepository = ulogaRepository;
         this.studijskiProgramRepository = studijskiProgramRepository;
+        this.unleash = unleash;
     }
 
     @Override
@@ -52,10 +57,22 @@ public class KorisnikServiceImpl implements KorisnikService {
         );
     }
 
-    private void proveriLozinku(String password) {
-        // osnovno bar 6 karaktera
-        if (password.length() < 6)
-            throw new ValidationException("Lozinka mora imati bar 6 karaktera.");
+        private void proveriLozinku(String password) {
+        if (unleash.isEnabled("strong-password")) {
+            // stroga pravila: bar 10 karaktera, broj, veliko slovo, specijalni znak
+            if (password.length() < 10)
+                throw new ValidationException("Lozinka mora imati bar 10 karaktera.");
+            if (!password.matches(".*[0-9].*"))
+                throw new ValidationException("Lozinka mora sadržati bar jedan broj.");
+            if (!password.matches(".*[A-ZŠĐČĆŽ].*"))
+                throw new ValidationException("Lozinka mora sadržati bar jedno veliko slovo.");
+            if (!password.matches(".*[^a-zA-Z0-9].*"))
+                throw new ValidationException("Lozinka mora sadržati bar jedan specijalni znak.");
+        } else {
+            // osnovno: bar 6 karaktera
+            if (password.length() < 6)
+                throw new ValidationException("Lozinka mora imati bar 6 karaktera.");
+        }
     }
 
     @Override

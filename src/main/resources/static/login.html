@@ -13,6 +13,7 @@
         .login-box button { width:100%; padding:10px; background:#0047B3; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:16px; font-weight:bold; }
         .login-box button:hover { background:#003a91; }
         .error { color:#d63b3b; text-align:center; margin-top:12px; font-size:14px; }
+        .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
     </style>
 </head>
 <body>
@@ -20,8 +21,10 @@
         <h2>Prijava</h2>
         <div class="sub">Karton predmeta</div>
         <form action="/login" method="post">
-            <input type="text" name="username" placeholder="Korisničko ime" required autofocus>
-            <input type="password" name="password" placeholder="Lozinka" required>
+            <label for="username" class="sr-only">Korisničko ime</label>
+            <input type="text" id="username" name="username" placeholder="Korisničko ime" required autofocus>
+            <label for="password" class="sr-only">Lozinka</label>
+            <input type="password" id="password" name="password" placeholder="Lozinka" required>
             <button type="submit">Prijavi se</button>
         </form>
         <div id="error" class="error"></div>

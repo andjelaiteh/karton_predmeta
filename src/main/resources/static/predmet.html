@@ -76,7 +76,10 @@
 
         function ucitajDetalje() {
             fetch(API_BASE + "/predmet/" + predmetId + "/detalji")
-                .then(res => { if (!res.ok) throw new Error(); return res.json(); })
+                .then(res => {
+                    if (!res.ok) { throw new Error("Greška pri učitavanju predmeta"); }
+                    return res.json();
+                })
                 .then(p => prikazi(p))
                 .catch(() => {
                     document.getElementById("prikaz").innerHTML =
@@ -90,7 +93,7 @@
             }
             fetch(API_BASE + "/predmet/" + predmetId, { method: "DELETE" })
                 .then(res => {
-                    if (!res.ok) throw new Error();
+                    if (!res.ok) { throw new Error("Greška pri brisanju predmeta"); }
                     alert("Predmet je obrisan.");
                     window.location.href = "/index.html";
                 })

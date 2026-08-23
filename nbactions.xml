@@ -28,6 +28,7 @@
                 <sonar.host.url>http://localhost:9000</sonar.host.url>
                 <sonar.token>sqp_79c8b020b30747c6feeab44e56f11a14c7714c32</sonar.token>
                 <sonar.projectKey>karton_predmeta</sonar.projectKey>
+                <sonar.sources>src/main/java,src/main/resources</sonar.sources>
                 <sonar.exclusions>**/BenchmarkController.java,**/test/**,**/*Benchmark.java,**/benchmark/**</sonar.exclusions>
                 <sonar.test.exclusions>**/benchmark/**</sonar.test.exclusions>
             </properties>

@@ -25,6 +25,7 @@ import java.util.Map;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import io.getunleash.Unleash;
 
 /**
  *
@@ -39,13 +40,17 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
     private final StatusRepository statusRepository;
     private final PredmetRepository predmetRepository;
     private final PrijavaPredmetaRepository prijavaPredmetaRepository;
+    private final Unleash unleash;
 
-    public PrijavaPredmetaServiceImpl(KorisnikRepository korisnikRepository, StatusRepository statusRepository, PredmetRepository predmetRepository, PrijavaPredmetaRepository prijavaPredmetaRepository) {
+    public PrijavaPredmetaServiceImpl(KorisnikRepository korisnikRepository, StatusRepository statusRepository, PredmetRepository predmetRepository, PrijavaPredmetaRepository prijavaPredmetaRepository, Unleash unleash) {
         this.korisnikRepository = korisnikRepository;
         this.statusRepository = statusRepository;
         this.predmetRepository = predmetRepository;
         this.prijavaPredmetaRepository = prijavaPredmetaRepository;
+        this.unleash = unleash;
     }
+    
+    
     
     
     
@@ -95,6 +100,10 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
     @Override
     @Transactional
     public void sacuvajPrijavu(List<Long> izborniIds) {
+        
+         if (!unleash.isEnabled("registration-open"))
+            throw new ValidationException("Prijave predmeta su trenutno zatvorene.");
+
         
         Korisnik k = trenutniKorisnik();
 
@@ -180,6 +189,9 @@ public class PrijavaPredmetaServiceImpl implements PrijavaPredmetaService{
 
     @Override
     public void izmeniPrijavu(List<Long> izborniIds) {
+        
+         if (!unleash.isEnabled("registration-open"))
+            throw new ValidationException("Prijave predmeta su trenutno zatvorene.");
 
         Korisnik k = trenutniKorisnik();
         if (!prijavaPredmetaRepository.existsByKorisnik_Id(k.getId()))
